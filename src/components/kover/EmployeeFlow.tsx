@@ -7,14 +7,13 @@ import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
 import { INSURANCE_CATALOG, Protection } from '@/lib/insurance-data';
 import { cn } from '@/lib/utils';
 
-type Step = 'welcome' | 'catalog' | 'customize' | 'review' | 'confirmation';
+type Step = 'catalog' | 'customize' | 'review' | 'confirmation';
 
 export function EmployeeFlow() {
-  const [step, setStep] = useState<Step>('welcome');
+  const [step, setStep] = useState<Step>('catalog');
   const [selectedInsuranceId, setSelectedInsuranceId] = useState<string | null>(null);
   const [cart, setCart] = useState<Record<string, { price: number, activeProtections: string[] }>>({});
   
@@ -87,23 +86,21 @@ export function EmployeeFlow() {
 
   return (
     <div className="flex-1 flex flex-col h-full">
-      {/* Barra de Orçamento (Estilo Nu) */}
-      {(step === 'catalog' || step === 'customize' || step === 'review') && (
+      {/* Barra de Orçamento Fixa no Topo */}
+      {(step !== 'confirmation') && (
         <div className="bg-zinc-950 text-white sticky top-16 z-[90] shadow-xl overflow-hidden">
           <div className="max-w-7xl mx-auto px-8 h-24 flex items-center justify-between">
             <div className="flex items-center gap-12">
-              <div 
-                className="flex items-center gap-3 cursor-pointer group"
-                onClick={() => {
-                  if (step === 'customize') setStep('catalog');
-                  else if (step === 'review') setStep('catalog');
-                  else setStep('welcome');
-                }}
-              >
-                <ArrowLeft className="w-5 h-5 text-zinc-500 group-hover:text-white transition-colors" />
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 group-hover:text-white transition-colors">Voltar</span>
-              </div>
-              <div className="h-10 w-px bg-zinc-800" />
+              {step !== 'catalog' && (
+                <div 
+                  className="flex items-center gap-3 cursor-pointer group"
+                  onClick={() => setStep('catalog')}
+                >
+                  <ArrowLeft className="w-5 h-5 text-zinc-500 group-hover:text-white transition-colors" />
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 group-hover:text-white transition-colors">Voltar</span>
+                </div>
+              )}
+              {step !== 'catalog' && <div className="h-10 w-px bg-zinc-800" />}
               <div className="flex items-center gap-10">
                 <div className="flex flex-col">
                   <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-1">TOTAL DO PLANO</p>
@@ -114,11 +111,11 @@ export function EmployeeFlow() {
                   <div className="flex items-center gap-4">
                     <div className="flex-1 h-2 bg-zinc-800 rounded-full overflow-hidden">
                       <div 
-                        className="h-full bg-secondary transition-all duration-500"
+                        className="h-full bg-[#10B981] transition-all duration-500"
                         style={{ width: `${usagePercentage}%` }}
                       />
                     </div>
-                    <span className={cn("text-lg font-black", remainingBenefit > 0 ? "text-secondary" : "text-destructive")}>
+                    <span className={cn("text-lg font-black", remainingBenefit > 0 ? "text-[#10B981]" : "text-destructive")}>
                       R$ {remainingBenefit.toFixed(2)}
                     </span>
                   </div>
@@ -135,34 +132,6 @@ export function EmployeeFlow() {
                 Revisar e Ativar
               </Button>
             )}
-          </div>
-        </div>
-      )}
-
-      {step === 'welcome' && (
-        <div className="flex-1 flex items-center justify-center p-12 bg-white">
-          <div className="max-w-3xl text-center space-y-12">
-            <div className="w-20 h-20 bg-[#F5F3FF] rounded-full flex items-center justify-center mx-auto shadow-sm">
-              <Shield className="w-10 h-10 text-primary" />
-            </div>
-            
-            <div className="space-y-6">
-              <h1 className="text-6xl font-bold text-zinc-900 tracking-tight leading-none">
-                Olá!<br/>
-                Pronto para montar sua <span className="text-primary">rede de proteção?</span>
-              </h1>
-              <p className="text-xl text-zinc-500 font-medium">
-                A sua empresa liberou <span className="text-zinc-900 font-bold border-b-4 border-primary/20">R$ 80,00</span> para você escolher os benefícios que desejar.
-              </p>
-            </div>
-
-            <Button 
-              className="h-16 px-10 text-lg rounded-full bg-zinc-950 hover:bg-zinc-800 text-white shadow-xl gap-3 transition-all hover:scale-[1.02]"
-              onClick={() => setStep('catalog')}
-            >
-              Começar agora
-              <ChevronRight className="w-5 h-5" />
-            </Button>
           </div>
         </div>
       )}
@@ -321,7 +290,7 @@ export function EmployeeFlow() {
                   </div>
                   <div className="flex justify-between text-xl">
                     <span className="text-zinc-500 font-bold">Benefício Empresa</span>
-                    <span className="font-black text-secondary">- R$ {Math.min(currentTotal, BENEFIT_AMOUNT).toFixed(2)}</span>
+                    <span className="font-black text-[#10B981]">- R$ {Math.min(currentTotal, BENEFIT_AMOUNT).toFixed(2)}</span>
                   </div>
                   <div className="h-px bg-zinc-800" />
                   <div className="flex justify-between items-center pt-4">
@@ -348,10 +317,10 @@ export function EmployeeFlow() {
       {step === 'confirmation' && (
         <div className="flex-1 flex flex-col items-center justify-center p-12 bg-white animate-in zoom-in-95 duration-500">
           <div className="max-w-2xl text-center">
-            <div className="w-32 h-32 rounded-[3.5rem] bg-secondary flex items-center justify-center mb-12 mx-auto shadow-2xl shadow-secondary/30">
+            <div className="w-32 h-32 rounded-[3.5rem] bg-[#10B981] flex items-center justify-center mb-12 mx-auto shadow-2xl shadow-secondary/30">
               <Check className="w-16 h-16 text-white stroke-[4px]" />
             </div>
-            <h2 className="text-7xl font-black text-zinc-900 mb-8 tracking-tighter leading-none">Tudo pronto,<br/>você está <span className="text-secondary">protegido!</span></h2>
+            <h2 className="text-7xl font-black text-zinc-900 mb-8 tracking-tighter leading-none">Tudo pronto,<br/>você está <span className="text-[#10B981]">protegido!</span></h2>
             <p className="text-2xl text-zinc-500 mb-16 leading-relaxed font-medium">
               Suas apólices digitais foram enviadas para o seu e-mail corporativo. Aproveite sua rede de proteção.
             </p>
@@ -359,7 +328,7 @@ export function EmployeeFlow() {
               className="h-20 px-16 rounded-full bg-zinc-950 text-white font-black text-xl hover:bg-zinc-800 shadow-2xl"
               onClick={() => {
                 setCart({});
-                setStep('welcome');
+                setStep('catalog');
               }}
             >
               Voltar ao Início
