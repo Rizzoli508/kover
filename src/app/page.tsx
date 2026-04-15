@@ -12,50 +12,55 @@ export default function Home() {
 
   if (view === 'landing') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#4F6BE3] via-[#6C3AED] to-[#8B5CF6] flex flex-col items-center justify-center p-6 font-body">
-        <h1 className="text-white text-2xl md:text-4xl font-bold mb-16 text-center tracking-tight max-w-2xl">
-          A revolução dos benefícios flexíveis de seguros.
-        </h1>
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6 font-body">
+        <div className="max-w-4xl w-full text-center mb-20">
+          <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-4">BEM-VINDO À KOVER</p>
+          <h1 className="text-zinc-900 text-5xl md:text-7xl font-black mb-6 tracking-tighter leading-[0.9]">
+            A revolução dos benefícios <span className="text-primary">flexíveis.</span>
+          </h1>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl w-full">
           {/* Portal RH Card */}
-          <div className="bg-white rounded-[2.5rem] p-12 flex flex-col items-start shadow-2xl transition-transform hover:scale-[1.01]">
-            <div className="w-16 h-16 bg-[#F0F4FF] rounded-2xl flex items-center justify-center mb-8">
-              <Building2 className="w-8 h-8 text-[#4F6BE3]" />
+          <div 
+            onClick={() => setView('company')}
+            className="bg-white rounded-[2.5rem] p-12 flex flex-col items-start border border-zinc-50 shadow-sm hover:shadow-2xl transition-all cursor-pointer group"
+          >
+            <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-10 transition-transform group-hover:scale-110">
+              <Building2 className="w-8 h-8 text-blue-500" />
             </div>
+            <p className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em] mb-2">ACESSO CORPORATIVO</p>
             <h2 className="text-4xl font-black text-zinc-900 mb-4 tracking-tighter">Portal RH</h2>
             <p className="text-zinc-500 text-lg mb-10 leading-relaxed font-medium">
-              Gerencie o saldo e acompanhe a adesão da sua equipe.
+              Gerencie o saldo e acompanhe a adesão da sua equipe em tempo real.
             </p>
-            <Button 
-              onClick={() => setView('company')}
-              className="w-full h-16 bg-[#3B59C9] hover:bg-[#2D449E] text-white rounded-2xl font-bold text-lg transition-all"
-            >
-              Entrar como RH
+            <Button className="w-full h-16 bg-primary hover:bg-primary/90 text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl shadow-primary/20">
+              ENTRAR COMO RH
             </Button>
           </div>
 
           {/* Colaborador Card */}
-          <div className="bg-white rounded-[2.5rem] p-12 flex flex-col items-start shadow-2xl transition-transform hover:scale-[1.01]">
-            <div className="w-16 h-16 bg-[#F5F3FF] rounded-2xl flex items-center justify-center mb-8">
-              <User className="w-8 h-8 text-[#8B5CF6]" />
+          <div 
+            onClick={() => setView('employee')}
+            className="bg-white rounded-[2.5rem] p-12 flex flex-col items-start border border-zinc-50 shadow-sm hover:shadow-2xl transition-all cursor-pointer group"
+          >
+            <div className="w-16 h-16 bg-purple-50 rounded-2xl flex items-center justify-center mb-10 transition-transform group-hover:scale-110">
+              <User className="w-8 h-8 text-primary" />
             </div>
+            <p className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em] mb-2">ÁREA DO USUÁRIO</p>
             <h2 className="text-4xl font-black text-zinc-900 mb-4 tracking-tighter">Colaborador</h2>
             <p className="text-zinc-500 text-lg mb-10 leading-relaxed font-medium">
-              Monte seu pacote de proteção personalizado.
+              Monte seu pacote de proteção personalizado com o seu saldo Kover.
             </p>
-            <Button 
-              onClick={() => setView('employee')}
-              className="w-full h-16 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white rounded-2xl font-bold text-lg transition-all"
-            >
-              Entrar como Colaborador
+            <Button className="w-full h-16 bg-zinc-900 hover:bg-zinc-800 text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl">
+              COMEÇAR AGORA
             </Button>
           </div>
         </div>
         
-        <div className="mt-16 flex items-center gap-2 opacity-50">
-          <Shield className="w-4 h-4 text-white" />
-          <span className="text-white font-bold tracking-[0.3em] text-[10px] uppercase">Kover Secure</span>
+        <div className="mt-20 flex items-center gap-2 opacity-20">
+          <Shield className="w-4 h-4 text-zinc-900" />
+          <span className="text-zinc-900 font-bold tracking-[0.3em] text-[10px] uppercase">Kover Secure Infrastructure</span>
         </div>
       </div>
     );
@@ -63,26 +68,27 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#F9FAFB]">
-      {/* Mini-header de navegação */}
-      <nav className="bg-white/80 backdrop-blur-md border-b border-zinc-100 h-16 sticky top-0 z-[100]">
-        <div className="max-w-7xl mx-auto h-full px-6 flex items-center justify-between">
+      <nav className="bg-white border-b border-zinc-100 h-20 sticky top-0 z-[100]">
+        <div className="max-w-7xl mx-auto h-full px-8 flex items-center justify-between">
           <div 
-            className="flex items-center gap-2 cursor-pointer"
+            className="flex items-center gap-3 cursor-pointer"
             onClick={() => setView('landing')}
           >
-            <Shield className="w-6 h-6 text-primary" />
-            <span className="font-black text-xl tracking-tighter">Kover</span>
+            <div className="w-10 h-10 bg-primary/5 rounded-xl flex items-center justify-center">
+              <Shield className="w-6 h-6 text-primary" />
+            </div>
+            <span className="font-black text-2xl tracking-tighter text-zinc-900">Kover</span>
           </div>
           
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-8">
             <button 
               onClick={() => setView(view === 'employee' ? 'company' : 'employee')}
               className="text-[10px] font-black text-zinc-400 hover:text-primary uppercase tracking-[0.2em] transition-colors"
             >
-              Mudar para {view === 'employee' ? 'EMPRESA' : 'COLABORADOR'}
+              MUDAR PARA {view === 'employee' ? 'EMPRESA' : 'COLABORADOR'}
             </button>
-            <div className="w-10 h-10 rounded-full bg-zinc-100 flex items-center justify-center">
-              <User className="w-5 h-5 text-zinc-500" />
+            <div className="w-12 h-12 rounded-full bg-zinc-100 flex items-center justify-center border-2 border-white shadow-sm">
+              <User className="w-6 h-6 text-zinc-500" />
             </div>
           </div>
         </div>
