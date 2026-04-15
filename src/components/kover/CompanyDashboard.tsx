@@ -1,9 +1,8 @@
-
 "use client";
 
 import React from 'react';
-import { Users, ShieldCheck, TrendingUp, Star, Package, ArrowUpRight, PlusCircle, PieChart, Activity } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Users, ShieldCheck, TrendingUp, Star, PlusCircle, PieChart, Activity } from 'lucide-react';
+import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
 export function CompanyDashboard() {
@@ -23,7 +22,7 @@ export function CompanyDashboard() {
   ];
 
   return (
-    <div className="flex-1 p-12 lg:p-20 bg-[#F9FAFB] overflow-y-auto">
+    <div className="flex-1 p-12 lg:p-20 bg-[#F4F4F5] overflow-y-auto">
       <header className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20">
         <div>
           <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-4">CENTRAL DA EMPRESA</p>
@@ -35,10 +34,10 @@ export function CompanyDashboard() {
         </Button>
       </header>
 
-      {/* Grid de Métricas Principais - Estilo idêntico ao print */}
+      {/* Grid de Métricas Principais */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-20">
         {metrics.map((m, i) => (
-          <Card key={i} className="border-none shadow-sm rounded-[2.5rem] p-12 bg-white transition-all hover:shadow-2xl group border border-zinc-50">
+          <Card key={i} className="border-none shadow-xl rounded-[2.5rem] p-12 bg-white transition-all hover:shadow-2xl group border border-zinc-50">
             <div className={`w-16 h-16 ${m.bg} ${m.color} rounded-2xl flex items-center justify-center mb-10 transition-transform group-hover:scale-110`}>
               <m.icon className="w-8 h-8" />
             </div>
@@ -49,8 +48,8 @@ export function CompanyDashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-        {/* Gráfico de Adesão - Estilo Print */}
-        <Card className="lg:col-span-2 border-none shadow-sm rounded-[3rem] p-16 bg-white border border-zinc-50">
+        {/* Gráfico de Adesão */}
+        <Card className="lg:col-span-2 border-none shadow-xl rounded-[3rem] p-16 bg-white border border-zinc-50">
           <div className="flex items-center justify-between mb-16">
             <h3 className="text-4xl font-black text-zinc-900 tracking-tighter flex items-center gap-5">
               <PieChart className="w-10 h-10 text-primary" />
@@ -79,7 +78,7 @@ export function CompanyDashboard() {
           </div>
         </Card>
 
-        {/* Card de Impacto Roxo - Estilo Print */}
+        {/* Card de Impacto */}
         <div className="space-y-12">
           <Card className="border-none bg-primary text-white rounded-[3rem] p-16 relative overflow-hidden h-full shadow-2xl shadow-primary/30">
             <div className="relative z-10 flex flex-col justify-between h-full">

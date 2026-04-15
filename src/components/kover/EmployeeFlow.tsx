@@ -1,8 +1,7 @@
-
 "use client";
 
 import React, { useState, useMemo } from 'react';
-import { ChevronRight, Check, ArrowLeft, Shield } from 'lucide-react';
+import { ChevronRight, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Card } from '@/components/ui/card';
@@ -48,12 +47,6 @@ export function EmployeeFlow() {
     }
   };
 
-  const removeFromPlan = (id: string) => {
-    const newCart = { ...cart };
-    delete newCart[id];
-    setCart(newCart);
-  };
-
   const toggleProtection = (id: string) => {
     setActiveProtections(prev => 
       prev.includes(id) ? prev.filter(p => p !== id) : [...prev, id]
@@ -61,7 +54,7 @@ export function EmployeeFlow() {
   };
 
   const renderProtectionCard = (p: Protection) => (
-    <div key={p.id} className="flex flex-col bg-white rounded-[2rem] mb-4 overflow-hidden border border-zinc-100 transition-all hover:shadow-lg hover:shadow-primary/5">
+    <div key={p.id} className="flex flex-col bg-white rounded-[2rem] mb-4 overflow-hidden border border-zinc-100 transition-all shadow-md hover:shadow-xl">
       <div className="flex items-center justify-between p-8">
         <div className="flex items-center gap-5">
           <div className="w-14 h-14 rounded-2xl bg-zinc-50 flex items-center justify-center text-zinc-900">
@@ -85,10 +78,10 @@ export function EmployeeFlow() {
   );
 
   return (
-    <div className="flex-1 flex flex-col h-full bg-[#F9FAFB]">
-      {/* Cabeçalho de Orçamento - Estilo Premium RH */}
+    <div className="flex-1 flex flex-col h-full bg-[#F4F4F5]">
+      {/* Cabeçalho de Orçamento */}
       {(step !== 'confirmation') && (
-        <div className="bg-white border-b border-zinc-100 sticky top-20 z-[90] py-10 shadow-sm">
+        <div className="bg-white border-b border-zinc-100 sticky top-20 z-[90] py-10 shadow-xl">
           <div className="max-w-7xl mx-auto px-10">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-10">
               <div className="flex items-center gap-10">
@@ -124,8 +117,7 @@ export function EmployeeFlow() {
               )}
             </div>
             
-            {/* Barra de Progresso - Estilo Dashboard RH */}
-            <div className="h-4 w-full bg-zinc-50 rounded-full overflow-hidden flex shadow-inner">
+            <div className="h-4 w-full bg-zinc-100 rounded-full overflow-hidden flex shadow-inner">
               <div 
                 className="h-full bg-primary transition-all duration-700 ease-out rounded-full"
                 style={{ width: `${usagePercentage}%` }}
@@ -155,8 +147,8 @@ export function EmployeeFlow() {
                       setActiveProtections(inCart ? cart[item.id].activeProtections : item.protections.filter(p => p.type === 'essential').map(p => p.id));
                     }}
                     className={cn(
-                      "group p-10 rounded-[2.5rem] border border-zinc-50 hover:border-primary/20 hover:shadow-2xl transition-all cursor-pointer relative flex flex-col justify-between h-[340px] bg-white",
-                      inCart ? 'ring-2 ring-primary border-transparent shadow-xl shadow-primary/10' : 'shadow-sm'
+                      "group p-10 rounded-[2.5rem] border border-zinc-50 hover:border-primary/20 hover:shadow-2xl transition-all cursor-pointer relative flex flex-col justify-between h-[340px] bg-white shadow-xl",
+                      inCart ? 'ring-2 ring-primary border-transparent' : ''
                     )}
                   >
                     <div>
@@ -219,7 +211,7 @@ export function EmployeeFlow() {
             </div>
           </div>
 
-          <aside className="w-full lg:w-[500px] bg-white border-l border-zinc-100 p-16 flex flex-col justify-between overflow-y-auto">
+          <aside className="w-full lg:w-[500px] bg-white border-l border-zinc-100 p-16 flex flex-col justify-between overflow-y-auto shadow-2xl">
             <div className="space-y-12">
               <div className="w-24 h-24 bg-primary/5 rounded-[2rem] flex items-center justify-center text-primary mb-10">
                 <selectedInsurance.icon className="w-12 h-12" />
@@ -255,8 +247,6 @@ export function EmployeeFlow() {
           </aside>
         </div>
       )}
-
-      {/* Outros steps (review/confirmation) seguem a mesma lógica visual */}
     </div>
   );
 }

@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState } from 'react';
@@ -24,7 +23,7 @@ export default function Home() {
           {/* Portal RH Card */}
           <div 
             onClick={() => setView('company')}
-            className="bg-white rounded-[2.5rem] p-12 flex flex-col items-start border border-zinc-50 shadow-sm hover:shadow-2xl transition-all cursor-pointer group"
+            className="bg-white rounded-[2.5rem] p-12 flex flex-col items-start border border-zinc-100 shadow-2xl hover:shadow-primary/10 transition-all cursor-pointer group"
           >
             <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-10 transition-transform group-hover:scale-110">
               <Building2 className="w-8 h-8 text-blue-500" />
@@ -42,7 +41,7 @@ export default function Home() {
           {/* Colaborador Card */}
           <div 
             onClick={() => setView('employee')}
-            className="bg-white rounded-[2.5rem] p-12 flex flex-col items-start border border-zinc-50 shadow-sm hover:shadow-2xl transition-all cursor-pointer group"
+            className="bg-white rounded-[2.5rem] p-12 flex flex-col items-start border border-zinc-100 shadow-2xl hover:shadow-primary/10 transition-all cursor-pointer group"
           >
             <div className="w-16 h-16 bg-purple-50 rounded-2xl flex items-center justify-center mb-10 transition-transform group-hover:scale-110">
               <User className="w-8 h-8 text-primary" />
@@ -67,7 +66,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F9FAFB]">
+    <div className="min-h-screen bg-[#F4F4F5]">
       <nav className="bg-white border-b border-zinc-100 h-20 sticky top-0 z-[100]">
         <div className="max-w-7xl mx-auto h-full px-8 flex items-center justify-between">
           <div 
