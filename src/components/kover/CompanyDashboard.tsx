@@ -1,112 +1,134 @@
 "use client";
 
 import React from 'react';
-import { Users, ShieldCheck, TrendingUp, Star, Package, ArrowUpRight, PlusCircle } from 'lucide-react';
+import { Users, ShieldCheck, TrendingUp, Star, Package, ArrowUpRight, PlusCircle, PieChart, Activity } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
 export function CompanyDashboard() {
   const metrics = [
-    { label: 'Colaboradores', value: '342', icon: Users, color: 'bg-blue-50 text-blue-500' },
-    { label: 'Protegidos', value: '287 / 84%', icon: ShieldCheck, color: 'bg-green-50 text-green-500' },
-    { label: 'Inv. Mensal', value: 'R$27.360', icon: TrendingUp, color: 'bg-purple-50 text-purple-500' },
-    { label: 'Satisfação', value: '4.7/5', icon: Star, color: 'bg-yellow-50 text-yellow-500' },
+    { label: 'Total de Colaboradores', value: '342', icon: Users, color: 'text-blue-500', bg: 'bg-blue-50' },
+    { label: 'Colaboradores Protegidos', value: '287 (84%)', icon: ShieldCheck, color: 'text-green-500', bg: 'bg-green-50' },
+    { label: 'Investimento Mensal', value: 'R$ 27.360', icon: TrendingUp, color: 'text-purple-500', bg: 'bg-purple-50' },
+    { label: 'Média de Satisfação', value: '4.7 / 5.0', icon: Star, color: 'text-yellow-500', bg: 'bg-yellow-50' },
   ];
 
   const distribution = [
-    { name: 'Seguro de Vida', percentage: 92 },
-    { name: 'Acidentes Pessoais', percentage: 78 },
-    { name: 'Proteção de Renda', percentage: 65 },
-    { name: 'Seguro Auto', percentage: 42 },
-    { name: 'Seguro Residencial', percentage: 38 },
-  ];
-
-  const topInsurances = [
-    { name: 'Seguro de Vida Flex', partner: 'Liberty Seguros', count: 215 },
-    { name: 'Renda Protegida', partner: 'Sura', count: 184 },
-    { name: 'Auto Especial', partner: 'Azul', count: 142 },
+    { name: 'Seguro de Vida', percentage: 92, count: 315 },
+    { name: 'Acidentes Pessoais', percentage: 78, count: 267 },
+    { name: 'Proteção de Renda', percentage: 65, count: 222 },
+    { name: 'Seguro Auto', percentage: 42, count: 144 },
+    { name: 'Seguro Residencial', percentage: 38, count: 130 },
   ];
 
   return (
-    <div className="flex-1 p-6 bg-zinc-50 overflow-y-auto">
-      <header className="mb-8">
-        <p className="text-xs font-bold text-zinc-400 uppercase tracking-widest">Dashboard Empresa</p>
-        <h1 className="text-3xl font-black text-zinc-900">TechLog Transportes</h1>
+    <div className="flex-1 p-8 lg:p-12 bg-zinc-50/50 overflow-y-auto">
+      <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        <div>
+          <p className="text-xs font-black text-primary uppercase tracking-[0.2em] mb-2">CENTRAL DA EMPRESA</p>
+          <h1 className="text-5xl font-black text-zinc-900 tracking-tight">TechLog Transportes</h1>
+        </div>
+        <Button className="h-14 px-8 rounded-2xl bg-primary hover:bg-primary/90 font-bold gap-3 shadow-xl shadow-primary/20">
+          <PlusCircle className="w-5 h-5" />
+          Gerenciar Colaboradores
+        </Button>
       </header>
 
-      <div className="grid grid-cols-2 gap-4 mb-8">
+      {/* Main Metrics Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
         {metrics.map((m, i) => (
-          <Card key={i} className="border-none shadow-sm rounded-3xl overflow-hidden">
-            <CardContent className="p-4">
-              <div className={`w-8 h-8 ${m.color} rounded-xl flex items-center justify-center mb-3`}>
-                <m.icon className="w-4 h-4" />
-              </div>
-              <p className="text-xs text-zinc-400 font-medium mb-1">{m.label}</p>
-              <p className="text-lg font-bold text-zinc-900">{m.value}</p>
-            </CardContent>
+          <Card key={i} className="border-none shadow-sm rounded-[2rem] p-8 bg-white">
+            <div className={`w-14 h-14 ${m.bg} ${m.color} rounded-[1.25rem] flex items-center justify-center mb-6`}>
+              <m.icon className="w-7 h-7" />
+            </div>
+            <p className="text-sm text-zinc-400 font-bold uppercase tracking-widest mb-2">{m.label}</p>
+            <p className="text-3xl font-black text-zinc-900">{m.value}</p>
           </Card>
         ))}
       </div>
 
-      <Card className="border-none shadow-sm rounded-3xl mb-8">
-        <CardHeader className="p-6 pb-0">
-          <CardTitle className="text-lg font-bold">Adesão por Categoria</CardTitle>
-        </CardHeader>
-        <CardContent className="p-6 space-y-6">
-          {distribution.map((d, i) => (
-            <div key={i} className="space-y-2">
-              <div className="flex justify-between text-xs font-bold">
-                <span className="text-zinc-500">{d.name}</span>
-                <span className="text-primary">{d.percentage}%</span>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Adhesion Chart Card */}
+        <Card className="lg:col-span-2 border-none shadow-sm rounded-[2.5rem] p-10 bg-white">
+          <div className="flex items-center justify-between mb-10">
+            <h3 className="text-2xl font-black text-zinc-900 flex items-center gap-3">
+              <PieChart className="w-6 h-6 text-primary" />
+              Adesão por Categoria
+            </h3>
+            <span className="text-xs font-bold text-zinc-400">ÚLTIMOS 30 DIAS</span>
+          </div>
+          <div className="space-y-8">
+            {distribution.map((d, i) => (
+              <div key={i} className="space-y-3">
+                <div className="flex justify-between items-end">
+                  <div>
+                    <span className="text-lg font-bold text-zinc-900">{d.name}</span>
+                    <p className="text-xs text-zinc-400 font-bold uppercase tracking-widest">{d.count} colaboradores</p>
+                  </div>
+                  <span className="text-2xl font-black text-primary">{d.percentage}%</span>
+                </div>
+                <div className="h-3 w-full bg-zinc-100 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-primary rounded-full transition-all duration-1000 ease-out" 
+                    style={{ width: `${d.percentage}%` }}
+                  />
+                </div>
               </div>
-              <div className="h-2 w-full bg-zinc-100 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-primary rounded-full transition-all duration-1000" 
-                  style={{ width: `${d.percentage}%` }}
-                />
+            ))}
+          </div>
+        </Card>
+
+        {/* Impact / Economy Card */}
+        <div className="space-y-8">
+          <Card className="border-none bg-primary text-white rounded-[2.5rem] p-10 relative overflow-hidden h-full">
+            <div className="relative z-10 flex flex-col justify-between h-full">
+              <div>
+                <Activity className="w-10 h-10 mb-8 opacity-60" />
+                <h3 className="text-3xl font-black mb-4 leading-tight">Retorno de Investimento</h3>
+                <p className="text-white/70 text-lg leading-relaxed mb-8">
+                  Colaboradores com planos de proteção ativa apresentam uma redução de <strong>40% no absenteísmo</strong>.
+                </p>
+              </div>
+              <div>
+                <p className="text-xs font-black text-white/40 uppercase tracking-widest mb-2">ECONOMIA ESTIMADA</p>
+                <div className="flex items-end gap-2 text-5xl font-black">
+                  R$ 34.200<span className="text-lg font-bold text-white/40 mb-2">/mês</span>
+                </div>
               </div>
             </div>
-          ))}
-        </CardContent>
-      </Card>
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 -mr-24 -mt-24 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-black/10 -ml-8 -mb-8 rounded-full blur-2xl" />
+          </Card>
+        </div>
+      </div>
 
-      <section className="mb-8">
-        <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-          <Package className="w-5 h-5 text-primary" /> Mais contratados
+      <section className="mt-12">
+        <h3 className="text-2xl font-black text-zinc-900 mb-8 flex items-center gap-3">
+          <Package className="w-6 h-6 text-primary" />
+          Planos mais contratados
         </h3>
-        <div className="space-y-3">
-          {topInsurances.map((ins, i) => (
-            <div key={i} className="p-4 bg-white rounded-2xl flex items-center justify-between border border-zinc-100">
-              <div>
-                <p className="font-bold text-sm text-zinc-900">{ins.name}</p>
-                <p className="text-[10px] text-zinc-400">{ins.partner}</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[
+            { name: 'Seguro de Vida Flex', partner: 'Liberty Seguros', count: 215, color: 'bg-blue-500' },
+            { name: 'Renda Protegida Premium', partner: 'Sura Seguradora', count: 184, color: 'bg-primary' },
+            { name: 'Auto Especial Kover', partner: 'Azul Seguros', count: 142, color: 'bg-zinc-900' },
+          ].map((ins, i) => (
+            <Card key={i} className="p-8 border-none shadow-sm rounded-[2rem] bg-white flex items-center justify-between">
+              <div className="flex items-center gap-6">
+                <div className={`w-3 h-12 rounded-full ${ins.color}`} />
+                <div>
+                  <p className="font-black text-xl text-zinc-900">{ins.name}</p>
+                  <p className="text-xs font-bold text-zinc-400 uppercase tracking-widest">{ins.partner}</p>
+                </div>
               </div>
               <div className="text-right">
-                <p className="font-bold text-primary">{ins.count}</p>
-                <p className="text-[10px] text-zinc-400">adesões</p>
+                <p className="text-3xl font-black text-primary">{ins.count}</p>
+                <p className="text-[10px] font-black text-zinc-400 uppercase">ADESÕES</p>
               </div>
-            </div>
+            </Card>
           ))}
         </div>
       </section>
-
-      <Card className="border-none bg-primary text-white rounded-[2rem] p-6 mb-8 relative overflow-hidden">
-        <div className="relative z-10">
-          <h3 className="text-xl font-bold mb-2">Economia estimada</h3>
-          <p className="text-white/80 text-sm leading-relaxed mb-4">
-            Colaboradores protegidos faltam 40% menos e têm 23% mais produtividade.
-          </p>
-          <div className="flex items-center gap-2 text-2xl font-black">
-            R$ 34.200<span className="text-sm font-normal text-white/60">/mês</span>
-          </div>
-        </div>
-        <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 -mr-8 -mt-8 rounded-full blur-3xl" />
-      </Card>
-
-      <Button className="w-full h-14 rounded-2xl bg-white text-zinc-900 border border-zinc-200 hover:bg-zinc-50 font-bold gap-2">
-        <PlusCircle className="w-5 h-5 text-primary" />
-        Adicionar colaboradores
-      </Button>
     </div>
   );
 }
