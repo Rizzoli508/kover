@@ -253,6 +253,82 @@ export function EmployeeFlow() {
           </aside>
         </div>
       )}
+
+      {step === 'review' && (
+        <div className="flex-1 p-8 lg:p-16 overflow-y-auto">
+          <div className="max-w-4xl mx-auto">
+            <header className="mb-16">
+              <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-3">QUASE LÁ</p>
+              <h2 className="text-5xl lg:text-6xl font-black text-zinc-900 tracking-tighter leading-tight">Revise seu <span className="text-primary">pacote.</span></h2>
+            </header>
+
+            <div className="space-y-6 mb-16">
+              {Object.entries(cart).map(([id, item]) => {
+                const category = INSURANCE_CATALOG.find(c => c.id === id);
+                if (!category) return null;
+                return (
+                  <div key={id} className="bg-white rounded-[2.5rem] p-10 flex items-center justify-between border border-zinc-100 shadow-xl">
+                    <div className="flex items-center gap-8">
+                      <div className="w-16 h-16 bg-zinc-50 rounded-2xl flex items-center justify-center text-zinc-900">
+                        <category.icon className="w-8 h-8" />
+                      </div>
+                      <div>
+                        <h4 className="text-2xl font-black text-zinc-900 tracking-tighter">{category.name}</h4>
+                        <p className="text-sm text-zinc-400 font-medium">{item.activeProtections.length} coberturas selecionadas</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-3xl font-black text-zinc-900 tracking-tighter">R$ {item.price.toFixed(2)}</p>
+                      <button 
+                        onClick={() => {
+                          const newCart = { ...cart };
+                          delete newCart[id];
+                          setCart(newCart);
+                        }}
+                        className="text-[10px] font-black text-zinc-300 hover:text-red-500 uppercase tracking-widest transition-colors"
+                      >
+                        REMOVER
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="bg-zinc-950 rounded-[3rem] p-12 lg:p-16 text-white flex flex-col md:flex-row items-center justify-between gap-12 shadow-2xl">
+              <div>
+                <p className="text-zinc-400 font-black uppercase tracking-widest text-[10px] mb-2">INVESTIMENTO MENSAL TOTAL</p>
+                <h3 className="text-6xl lg:text-7xl font-black tracking-tighter">R$ {currentTotal.toFixed(2)}</h3>
+                <p className="text-white/40 mt-4 font-medium italic text-lg">* Descontado diretamente do seu saldo Kover</p>
+              </div>
+              <Button 
+                onClick={() => setStep('confirmation')}
+                className="w-full md:w-auto h-20 lg:h-24 px-12 lg:px-16 rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-black text-lg lg:text-xl shadow-2xl shadow-primary/20 transition-all uppercase tracking-widest"
+              >
+                CONFIRMAR E ATIVAR
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {step === 'confirmation' && (
+        <div className="flex-1 flex items-center justify-center p-6">
+          <div className="max-w-2xl w-full text-center slide-in">
+            <div className="w-32 h-32 bg-[#10B981]/10 rounded-full flex items-center justify-center mx-auto mb-12">
+              <CheckCircle2 className="w-16 h-16 text-[#10B981]" />
+            </div>
+            <h2 className="text-5xl lg:text-6xl font-black text-zinc-900 mb-6 tracking-tighter leading-[0.9]">Proteção ativada com <span className="text-[#10B981]">sucesso!</span></h2>
+            <p className="text-xl lg:text-2xl text-zinc-500 mb-12 font-medium leading-relaxed">Você já está seguro. Suas apólices foram enviadas para o seu e-mail corporativo.</p>
+            <Button 
+              onClick={() => window.location.reload()}
+              className="h-16 lg:h-20 px-12 rounded-[1.5rem] bg-zinc-900 hover:bg-zinc-800 text-white font-black text-xs uppercase tracking-[0.2em] shadow-xl"
+            >
+              VOLTAR AO INÍCIO
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
