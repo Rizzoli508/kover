@@ -14,11 +14,11 @@ export function CompanyDashboard() {
   ];
 
   const distribution = [
-    { name: 'Seguro de Vida', percentage: 92, count: 315 },
-    { name: 'Acidentes Pessoais', percentage: 78, count: 267 },
-    { name: 'Proteção de Renda', percentage: 65, count: 222 },
-    { name: 'Seguro Auto', percentage: 42, count: 144 },
-    { name: 'Seguro Residencial', percentage: 38, count: 130 },
+    { name: 'Seguro Pet', percentage: 45, count: 154 },
+    { name: 'Renda Protegida', percentage: 88, count: 301 },
+    { name: 'Seguro Celular', percentage: 92, count: 315 },
+    { name: 'Equipamentos de Trabalho', percentage: 35, count: 120 },
+    { name: 'Proteção Digital', percentage: 78, count: 267 },
   ];
 
   return (
@@ -84,9 +84,9 @@ export function CompanyDashboard() {
             <div className="relative z-10 flex flex-col justify-between h-full">
               <div>
                 <Activity className="w-10 h-10 mb-8 opacity-60" />
-                <h3 className="text-3xl font-black mb-4 leading-tight">Retorno de Investimento</h3>
+                <h3 className="text-3xl font-black mb-4 leading-tight">Impacto na Operação</h3>
                 <p className="text-white/70 text-lg leading-relaxed mb-8">
-                  Colaboradores com planos de proteção ativa apresentam uma redução de <strong>40% no absenteísmo</strong>.
+                  Colaboradores com seguro pet e renda protegida apresentam <strong>32% mais engajamento</strong> em benefícios.
                 </p>
               </div>
               <div>
@@ -105,13 +105,13 @@ export function CompanyDashboard() {
       <section className="mt-12">
         <h3 className="text-2xl font-black text-zinc-900 mb-8 flex items-center gap-3">
           <Package className="w-6 h-6 text-primary" />
-          Planos mais contratados
+          Planos de Nicho em Alta
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
-            { name: 'Seguro de Vida Flex', partner: 'Liberty Seguros', count: 215, color: 'bg-blue-500' },
-            { name: 'Renda Protegida Premium', partner: 'Sura Seguradora', count: 184, color: 'bg-primary' },
-            { name: 'Auto Especial Kover', partner: 'Azul Seguros', count: 142, color: 'bg-zinc-900' },
+            { name: 'Seguro Pet Saúde+', partner: 'Kover Pet', count: 154, color: 'bg-green-500' },
+            { name: 'Renda Garantida DIT', partner: 'Kover Renda', count: 301, color: 'bg-primary' },
+            { name: 'Tech Shield Pro', partner: 'Kover Máquinas', count: 120, color: 'bg-zinc-900' },
           ].map((ins, i) => (
             <Card key={i} className="p-8 border-none shadow-sm rounded-[2rem] bg-white flex items-center justify-between">
               <div className="flex items-center gap-6">

@@ -1,4 +1,4 @@
-import { Heart, Zap, Wallet, Car, Smartphone, Home, Bike, PawPrint, Plane, ShieldAlert, ShieldCheck, UserCheck, Flame, Lock, Globe, Camera } from 'lucide-react';
+import { Heart, Zap, Wallet, Car, Smartphone, Home, Bike, PawPrint, Plane, ShieldAlert, ShieldCheck, UserCheck, Flame, Lock, Globe, Camera, Briefcase, Syringe, Crosshair, MapPin } from 'lucide-react';
 
 export interface Protection {
   id: string;
@@ -22,6 +22,75 @@ export interface InsuranceCategory {
 
 export const INSURANCE_CATALOG: InsuranceCategory[] = [
   {
+    id: 'pet',
+    name: 'Seguro Pet',
+    basePrice: 25,
+    icon: PawPrint,
+    description: 'Saúde e tranquilidade para o seu melhor amigo.',
+    unit: 'mês',
+    protections: [
+      { id: 'pet-1', name: 'Consultas e Exames', description: 'Rede credenciada nacional', price: 25, icon: Syringe, type: 'essential' },
+      { id: 'pet-2', name: 'Vacinas e Prevenção', description: 'Anual e check-ups', price: 15, icon: ShieldCheck, type: 'essential' },
+      { id: 'pet-3', name: 'Cirurgias e Internação', description: 'Cobertura para imprevistos', price: 30, icon: Heart, type: 'extra' },
+      { id: 'pet-4', name: 'Responsabilidade Civil', description: 'Danos causados pelo pet', price: 8, icon: UserCheck, type: 'extra' },
+      { id: 'pet-5', name: 'Funeral e Cremação', description: 'Apoio no momento difícil', price: 5, icon: Flame, type: 'extra' }
+    ]
+  },
+  {
+    id: 'maquinas',
+    name: 'Equipamentos de Trabalho',
+    basePrice: 18,
+    icon: Briefcase,
+    description: 'Proteção para suas ferramentas de trabalho e máquinas.',
+    unit: 'mês',
+    protections: [
+      { id: 'maq-1', name: 'Danos Físicos', description: 'Quedas e acidentes externos', price: 18, icon: Zap, type: 'essential' },
+      { id: 'maq-2', name: 'Roubo e Furto Qualificado', description: 'Proteção no local de trabalho', price: 15, icon: Lock, type: 'essential' },
+      { id: 'maq-3', name: 'Danos Elétricos', description: 'Curto-circuito e raios', price: 10, icon: Flame, type: 'extra' },
+      { id: 'maq-4', name: 'Lucros Cessantes', description: 'Diária se a máquina parar', price: 22, icon: Wallet, type: 'extra' }
+    ]
+  },
+  {
+    id: 'renda',
+    name: 'Renda Protegida (DIT)',
+    basePrice: 20,
+    icon: Wallet,
+    description: 'Garante seu salário se você precisar parar por doença ou acidente.',
+    unit: 'mês',
+    protections: [
+      { id: 'dit-1', name: 'Incapacidade Temporária', description: 'Diárias por afastamento', price: 20, icon: UserCheck, type: 'essential' },
+      { id: 'dit-2', name: 'Invalidez Permanente', description: 'Indenização total ou parcial', price: 12, icon: ShieldAlert, type: 'essential' },
+      { id: 'dit-3', name: 'Assistência Médica 24h', description: 'Telemedicina inclusa', price: 8, icon: Heart, type: 'extra' }
+    ]
+  },
+  {
+    id: 'bike',
+    name: 'Bike & Patinete',
+    basePrice: 14,
+    icon: Bike,
+    description: 'Mobilidade segura para o seu dia a dia.',
+    unit: 'mês',
+    protections: [
+      { id: 'bik-1', name: 'Roubo e Furto', description: 'Inclusive fora de casa', price: 14, icon: ShieldAlert, type: 'essential' },
+      { id: 'bik-2', name: 'Danos na Tentativa de Roubo', description: 'Reparos e peças', price: 7, icon: Zap, type: 'essential' },
+      { id: 'bik-3', name: 'Danos a Terceiros', description: 'Acidentes no trânsito', price: 9, icon: UserCheck, type: 'extra' },
+      { id: 'bik-4', name: 'Transporte de Bike', description: 'Danos em transito no carro', price: 5, icon: Car, type: 'extra' }
+    ]
+  },
+  {
+    id: 'digital',
+    name: 'Proteção Digital',
+    basePrice: 9,
+    icon: Lock,
+    description: 'Segurança para seus dados e transações bancárias.',
+    unit: 'mês',
+    protections: [
+      { id: 'dig-1', name: 'Saques sob Coação', description: 'Reembolso por PIX/Cartão', price: 9, icon: Wallet, type: 'essential' },
+      { id: 'dig-2', name: 'Phishing e Fraudes', description: 'Proteção em compras online', price: 12, icon: Globe, type: 'essential' },
+      { id: 'dig-3', name: 'Recuperação de Identidade', description: 'Apoio jurídico e técnico', price: 6, icon: UserCheck, type: 'extra' }
+    ]
+  },
+  {
     id: 'celular',
     name: 'Seguro Celular',
     basePrice: 15,
@@ -36,54 +105,26 @@ export const INSURANCE_CATALOG: InsuranceCategory[] = [
     ]
   },
   {
-    id: 'vida',
-    name: 'Seguro de Vida',
-    basePrice: 13,
-    icon: Heart,
-    description: 'Proteção para quem você ama nos momentos mais difíceis.',
-    unit: 'mês',
-    protections: [
-      { id: 'vid-1', name: 'Morte natural ou acidental', description: 'Capital para dependentes', price: 13, icon: Heart, type: 'essential' },
-      { id: 'vid-2', name: 'Invalidez por acidente', description: 'Proteção para você', price: 7, icon: UserCheck, type: 'essential' },
-      { id: 'vid-3', name: 'Assistência funeral', description: 'Apoio total à família', price: 4, icon: ShieldCheck, type: 'extra' },
-      { id: 'vid-4', name: 'Doenças graves', description: 'Antecipação do capital', price: 10, icon: Zap, type: 'extra' }
-    ]
-  },
-  {
-    id: 'auto',
-    name: 'Seguro Auto',
-    basePrice: 39,
-    icon: Car,
-    description: 'Cobertura completa para o seu veículo.',
-    unit: 'mês',
-    protections: [
-      { id: 'aut-1', name: 'Colisão e Danos', description: 'Reparos e perda total', price: 39, icon: Car, type: 'essential' },
-      { id: 'aut-2', name: 'Roubo e Furto', description: '100% da tabela FIPE', price: 25, icon: ShieldAlert, type: 'essential' },
-      { id: 'aut-3', name: 'Assistência 24h', description: 'Guincho e chaveiro ilimitado', price: 12, icon: Zap, type: 'essential' },
-      { id: 'aut-4', name: 'Danos a Terceiros', description: 'Até R$ 50.000,00', price: 15, icon: UserCheck, type: 'extra' },
-      { id: 'aut-5', name: 'Carro Reserva', description: '7 ou 15 dias', price: 9, icon: Smartphone, type: 'extra' }
-    ]
-  },
-  {
-    id: 'residencial',
-    name: 'Seguro Residencial',
+    id: 'viagem',
+    name: 'Seguro Viagem',
     basePrice: 12,
-    icon: Home,
-    description: 'Cuide do seu patrimônio com assistências 24h.',
+    icon: Plane,
+    description: 'Assistência completa para suas viagens nacionais e internacionais.',
     unit: 'mês',
     protections: [
-      { id: 'res-1', name: 'Incêndio e Raio', description: 'Danos estruturais', price: 12, icon: Flame, type: 'essential' },
-      { id: 'res-2', name: 'Danos Elétricos', description: 'Eletrodomésticos e fiação', price: 8, icon: Zap, type: 'essential' },
-      { id: 'res-3', name: 'Roubo e Furto', description: 'Bens dentro de casa', price: 10, icon: Lock, type: 'essential' },
-      { id: 'res-4', name: 'Serviços Hidráulicos', description: 'Encanador 24h', price: 5, icon: Home, type: 'extra' },
-      { id: 'res-5', name: 'Responsabilidade Civil', description: 'Danos a vizinhos', price: 4, icon: UserCheck, type: 'extra' }
+      { id: 'via-1', name: 'Despesas Médicas', description: 'Até US$ 30.000', price: 12, icon: Heart, type: 'essential' },
+      { id: 'via-2', name: 'Extravio de Bagagem', description: 'Indenização imediata', price: 8, icon: Briefcase, type: 'essential' },
+      { id: 'via-3', name: 'Atraso de Voo', description: 'Reembolso de gastos', price: 5, icon: Globe, type: 'extra' }
     ]
   }
 ];
 
 export const MAPPING_NAME_TO_ID: Record<string, string> = {
-  'Seguro de Vida': 'vida',
-  'Seguro Auto': 'auto',
+  'Seguro Pet': 'pet',
+  'Equipamentos de Trabalho': 'maquinas',
+  'Renda Protegida (DIT)': 'renda',
+  'Bike & Patinete': 'bike',
+  'Proteção Digital': 'digital',
   'Seguro Celular': 'celular',
-  'Seguro Residencial': 'residencial',
+  'Seguro Viagem': 'viagem',
 };
