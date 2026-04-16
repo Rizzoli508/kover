@@ -137,7 +137,7 @@ export function CompanyDashboard() {
       </div>
 
       <Sheet open={isModalOpen} onOpenChange={(open) => !isLoading && setIsModalOpen(open)}>
-        <SheetContent className="w-full sm:max-w-md rounded-l-[2.5rem] border-l-0 p-10 flex flex-col justify-between bg-white shadow-2xl">
+        <SheetContent className="w-full sm:max-w-md rounded-l-[2rem] border-l-0 p-6 md:p-10 flex flex-col bg-white shadow-2xl overflow-y-auto">
           {isSuccess ? (
             <div className="flex-1 flex flex-col items-center justify-center text-center space-y-6">
               <div className="w-24 h-24 bg-green-50 rounded-full flex items-center justify-center text-green-500 mb-4 animate-in zoom-in-50 duration-500">
@@ -167,7 +167,7 @@ export function CompanyDashboard() {
                 </SheetDescription>
               </SheetHeader>
 
-              <form onSubmit={handleCreateEmployee} className="flex-1 space-y-8">
+              <form onSubmit={handleCreateEmployee} className="flex-1 space-y-5 md:space-y-8">
                 <div className="space-y-4">
                   <Label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">CPF DO FUNCIONÁRIO</Label>
                   <Input 
@@ -211,10 +211,10 @@ export function CompanyDashboard() {
                 </div>
               </form>
 
-              <SheetFooter className="pt-10">
-                <Button 
+              <SheetFooter className="pt-6 md:pt-10">
+                <Button
                   onClick={handleCreateEmployee}
-                  className="w-full h-20 rounded-[1.75rem] bg-zinc-900 text-white hover:bg-zinc-800 font-black text-lg shadow-2xl transition-all uppercase tracking-widest"
+                  className="w-full h-14 md:h-20 rounded-2xl bg-zinc-900 text-white hover:bg-zinc-800 font-black text-sm md:text-lg shadow-2xl transition-all uppercase tracking-widest"
                 >
                   FINALIZAR CADASTRO
                 </Button>
