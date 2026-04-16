@@ -2,6 +2,7 @@ import type {Metadata} from 'next';
 import './globals.css';
 import { FirebaseClientProvider } from '@/firebase';
 import { Toaster } from '@/components/ui/toaster';
+import { ChatWidget } from '@/components/kover/ChatWidget';
 
 export const metadata: Metadata = {
   title: 'Kover - Benefícios Flexíveis',
@@ -24,6 +25,7 @@ export default function RootLayout({
         <FirebaseClientProvider>
           {children}
           <Toaster />
+          <ChatWidget />
         </FirebaseClientProvider>
       </body>
     </html>
