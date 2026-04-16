@@ -8,13 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter } from '@/components/ui/sheet';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useFirestore } from '@/firebase';
-import { collection, doc, setDoc, serverTimestamp } from 'firebase/firestore';
-import { errorEmitter } from '@/firebase/error-emitter';
-import { FirestorePermissionError } from '@/firebase/errors';
 
 export function CompanyDashboard() {
-  const db = useFirestore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -50,40 +45,13 @@ export function CompanyDashboard() {
 
     // Simular tempo de criação de conta
     setTimeout(() => {
-      const employeeRef = doc(db, 'users', employeeId);
-      const employeeData = {
-        id: employeeId,
-        cpf: formData.cpf,
-        cep: formData.cep,
-        companyId: 'techlog-001', // Mocked for MVP
-        role: 'colaborador',
-        status: 'ativo',
-        benefitFlexibleValue: Number(formData.benefitValue),
-        benefitBalanceMonthly: Number(formData.benefitValue),
-        benefitBalanceAvailable: Number(formData.benefitValue),
-        loginId: loginId,
-        password: '123456',
-        createdAt: serverTimestamp()
-      };
-
-      setDoc(employeeRef, employeeData)
-        .then(() => {
-          setIsLoading(false);
-          setIsSuccess(true);
-          setTimeout(() => {
-            setIsSuccess(false);
-            setIsModalOpen(false);
-            setFormData({ cpf: '', cep: '', benefitValue: '' });
-          }, 2000);
-        })
-        .catch((error) => {
-          setIsLoading(false);
-          errorEmitter.emit('permission-error', new FirestorePermissionError({
-            path: `users/${employeeId}`,
-            operation: 'create',
-            requestResourceData: employeeData
-          }));
-        });
+      setIsLoading(false);
+      setIsSuccess(true);
+      setTimeout(() => {
+        setIsSuccess(false);
+        setIsModalOpen(false);
+        setFormData({ cpf: '', cep: '', benefitValue: '' });
+      }, 2000);
     }, 2500);
   };
 

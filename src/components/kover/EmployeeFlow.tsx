@@ -11,16 +11,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { INSURANCE_CATALOG, Protection } from '@/lib/insurance-data';
 import { cn } from '@/lib/utils';
-import { useFirestore } from '@/firebase';
-import { collection, query, where, getDocs } from 'firebase/firestore';
 
 type Step = 'login' | 'catalog' | 'customize' | 'review' | 'confirmation';
 
 export function EmployeeFlow() {
-  const db = useFirestore();
   const [step, setStep] = useState<Step>('login');
   const [loginData, setLoginData] = useState({ loginId: '', password: '' });
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [loginSuccess, setLoginSuccess] = useState(false);
   const [loginError, setLoginError] = useState('');
   const [employee, setEmployee] = useState<any>(null);
 
@@ -50,26 +48,14 @@ export function EmployeeFlow() {
     setIsLoggingIn(true);
     setLoginError('');
 
-    try {
-      const q = query(
-        collection(db, 'users'),
-        where('loginId', '==', loginData.loginId),
-        where('password', '==', loginData.password)
-      );
-      
-      const snapshot = await getDocs(q);
-      
-      if (!snapshot.empty) {
-        setEmployee(snapshot.docs[0].data());
-        setStep('catalog');
-      } else {
-        setLoginError('Credenciais inválidas. Verifique os dados ou contate o RH.');
-      }
-    } catch (err) {
-      setLoginError('Erro ao conectar ao servidor. Tente novamente.');
-    } finally {
+    setTimeout(() => {
       setIsLoggingIn(false);
-    }
+      setLoginSuccess(true);
+      setTimeout(() => {
+        setEmployee({ loginId: loginData.loginId, benefitBalanceAvailable: 80 });
+        setStep('catalog');
+      }, 1400);
+    }, 1000);
   };
 
   const addToPlan = () => {
@@ -119,60 +105,77 @@ export function EmployeeFlow() {
   if (step === 'login') {
     return (
       <div className="flex-1 flex items-center justify-center bg-[#F4F4F5] p-6">
-        <Card className="max-w-md w-full p-12 rounded-[2.5rem] border-none shadow-2xl bg-white">
-          <div className="text-center mb-12">
-            <div className="w-20 h-20 bg-primary/5 rounded-[1.75rem] flex items-center justify-center text-primary mx-auto mb-8">
-              <ShieldCheck className="w-10 h-10" />
-            </div>
-            <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-4">ÁREA DO COLABORADOR</p>
-            <h2 className="text-4xl font-black text-zinc-900 tracking-tighter">Bem-vindo à Kover</h2>
-          </div>
-
-          <form onSubmit={handleLogin} className="space-y-8">
-            <div className="space-y-4">
-              <Label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">ID DE ACESSO</Label>
-              <div className="relative">
-                <User className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-300" />
-                <Input 
-                  required
-                  placeholder="Ex: C123456" 
-                  className="h-16 pl-16 rounded-2xl bg-zinc-50 border-none font-bold text-lg"
-                  value={loginData.loginId}
-                  onChange={(e) => setLoginData({...loginData, loginId: e.target.value})}
-                />
+        <Card className="max-w-md w-full p-12 rounded-[2.5rem] border-none shadow-2xl bg-white overflow-hidden">
+          {loginSuccess ? (
+            <div className="flex flex-col items-center justify-center py-12 gap-6" style={{animation: 'fadeInUp 0.4s ease forwards'}}>
+              <div className="w-24 h-24 bg-green-50 rounded-full flex items-center justify-center" style={{animation: 'popIn 0.4s cubic-bezier(0.16,1,0.3,1) forwards'}}>
+                <CheckCircle2 className="w-12 h-12 text-[#10B981]" />
+              </div>
+              <div className="text-center">
+                <p className="text-[10px] font-black text-[#10B981] uppercase tracking-[0.3em] mb-2">ACESSO CONFIRMADO</p>
+                <h2 className="text-3xl font-black text-zinc-900 tracking-tighter">Entrando...</h2>
+              </div>
+              <div className="w-full bg-zinc-100 rounded-full h-1.5 overflow-hidden">
+                <div className="h-full bg-[#10B981] rounded-full" style={{animation: 'loadBar 1.2s ease forwards'}} />
               </div>
             </div>
-
-            <div className="space-y-4">
-              <Label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">SENHA PADRÃO</Label>
-              <div className="relative">
-                <Lock className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-300" />
-                <Input 
-                  required
-                  type="password"
-                  placeholder="******" 
-                  className="h-16 pl-16 rounded-2xl bg-zinc-50 border-none font-bold text-lg"
-                  value={loginData.password}
-                  onChange={(e) => setLoginData({...loginData, password: e.target.value})}
-                />
+          ) : (
+            <>
+              <div className="text-center mb-12">
+                <div className="w-20 h-20 bg-primary/5 rounded-[1.75rem] flex items-center justify-center text-primary mx-auto mb-8">
+                  <ShieldCheck className="w-10 h-10" />
+                </div>
+                <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-4">ÁREA DO COLABORADOR</p>
+                <h2 className="text-4xl font-black text-zinc-900 tracking-tighter">Bem-vindo à Kover</h2>
               </div>
-            </div>
 
-            {loginError && (
-              <p className="text-red-500 text-sm font-bold text-center">{loginError}</p>
-            )}
+              <form onSubmit={handleLogin} className="space-y-8">
+                <div className="space-y-4">
+                  <Label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">ID DE ACESSO</Label>
+                  <div className="relative">
+                    <User className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-300" />
+                    <Input
+                      required
+                      placeholder="Ex: C123456"
+                      className="h-16 pl-16 rounded-2xl bg-zinc-50 border-none font-bold text-lg"
+                      value={loginData.loginId}
+                      onChange={(e) => setLoginData({...loginData, loginId: e.target.value})}
+                    />
+                  </div>
+                </div>
 
-            <Button 
-              disabled={isLoggingIn}
-              className="w-full h-20 rounded-[1.75rem] bg-zinc-900 text-white hover:bg-zinc-800 font-black text-lg shadow-xl uppercase tracking-widest transition-all"
-            >
-              {isLoggingIn ? <Loader2 className="w-6 h-6 animate-spin" /> : "ENTRAR AGORA"}
-            </Button>
-          </form>
+                <div className="space-y-4">
+                  <Label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">SENHA PADRÃO</Label>
+                  <div className="relative">
+                    <Lock className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-300" />
+                    <Input
+                      required
+                      type="password"
+                      placeholder="******"
+                      className="h-16 pl-16 rounded-2xl bg-zinc-50 border-none font-bold text-lg"
+                      value={loginData.password}
+                      onChange={(e) => setLoginData({...loginData, password: e.target.value})}
+                    />
+                  </div>
+                </div>
 
-          <p className="text-center text-zinc-400 text-xs mt-10 font-medium">
-            Primeiro acesso? Use o ID fornecido pelo seu RH.
-          </p>
+                {loginError && (
+                  <p className="text-red-500 text-sm font-bold text-center">{loginError}</p>
+                )}
+
+                <Button
+                  disabled={isLoggingIn}
+                  className="w-full h-20 rounded-[1.75rem] bg-zinc-900 text-white hover:bg-zinc-800 font-black text-lg shadow-xl uppercase tracking-widest transition-all"
+                >
+                  {isLoggingIn ? <Loader2 className="w-6 h-6 animate-spin" /> : "ENTRAR AGORA"}
+                </Button>
+              </form>
+
+              <p className="text-center text-zinc-400 text-xs mt-10 font-medium">
+                Primeiro acesso? Use o ID fornecido pelo seu RH.
+              </p>
+            </>
+          )}
         </Card>
       </div>
     );

@@ -29,11 +29,28 @@
 
 @layer base {
   * {
-    @apply border-border;
+    border-color: hsl(var(--border));
   }
   body {
-    @apply bg-[#F4F4F5] text-foreground font-body;
+    background-color: #F4F4F5;
+    color: hsl(var(--foreground));
+    font-family: Inter, sans-serif;
   }
+}
+
+@keyframes popIn {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { transform: translateY(16px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes loadBar {
+  from { width: 0%; }
+  to { width: 100%; }
 }
 
 .slide-in {
