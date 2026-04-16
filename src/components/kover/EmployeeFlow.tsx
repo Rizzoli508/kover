@@ -78,26 +78,26 @@ export function EmployeeFlow() {
   };
 
   const renderProtectionCard = (p: Protection) => (
-    <div key={p.id} className="flex flex-col bg-white rounded-[2rem] mb-4 overflow-hidden border border-zinc-100 transition-all shadow-md hover:shadow-xl">
-      <div className="flex items-center justify-between p-8">
-        <div className="flex items-center gap-5">
-          <div className="w-14 h-14 rounded-2xl bg-zinc-50 flex items-center justify-center text-zinc-900">
-            <p.icon className="w-7 h-7" />
+    <div key={p.id} className="flex flex-col bg-white rounded-[1.5rem] md:rounded-[2rem] overflow-hidden border border-zinc-100 transition-all shadow-md hover:shadow-xl">
+      <div className="flex items-center justify-between p-4 md:p-8">
+        <div className="flex items-center gap-3 md:gap-5">
+          <div className="w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-zinc-50 flex items-center justify-center text-zinc-900 shrink-0">
+            <p.icon className="w-5 h-5 md:w-7 md:h-7" />
           </div>
           <div>
-            <span className="text-xl font-black text-zinc-900 block tracking-tight">{p.name}</span>
-            <span className="text-xs font-black text-primary uppercase tracking-widest">R$ {p.price.toFixed(2)} / MÊS</span>
+            <span className="text-base md:text-xl font-black text-zinc-900 block tracking-tight">{p.name}</span>
+            <span className="text-[10px] md:text-xs font-black text-primary uppercase tracking-widest">R$ {p.price.toFixed(2)} / MÊS</span>
           </div>
         </div>
-        <div className="flex items-center justify-center">
-          <Switch 
-            checked={activeProtections.includes(p.id)} 
+        <div className="flex items-center justify-center shrink-0 ml-2">
+          <Switch
+            checked={activeProtections.includes(p.id)}
             onCheckedChange={() => toggleProtection(p.id)}
           />
         </div>
       </div>
-      <div className="px-8 pb-8 pt-0">
-        <p className="text-sm text-zinc-400 font-medium leading-relaxed max-w-lg">{p.description}</p>
+      <div className="px-4 md:px-8 pb-4 md:pb-8 pt-0">
+        <p className="text-xs md:text-sm text-zinc-400 font-medium leading-relaxed max-w-lg">{p.description}</p>
       </div>
     </div>
   );
@@ -185,44 +185,44 @@ export function EmployeeFlow() {
     <div className="flex-1 flex flex-col h-full bg-[#F4F4F5]">
       {/* Cabeçalho de Orçamento */}
       {(step !== 'confirmation') && (
-        <div className="bg-white border-b border-zinc-100 sticky top-20 z-[90] py-8 lg:py-10 shadow-sm">
-          <div className="max-w-7xl mx-auto px-6 lg:px-10">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-8">
-              <div className="flex items-center gap-8">
+        <div className="bg-white border-b border-zinc-100 sticky top-0 md:top-20 z-[90] py-4 md:py-8 lg:py-10 shadow-sm">
+          <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-10">
+            <div className="flex items-center justify-between gap-3 mb-4">
+              <div className="flex items-center gap-3 md:gap-8">
                 {step !== 'catalog' && (
-                  <button 
+                  <button
                     onClick={() => setStep('catalog')}
-                    className="flex items-center justify-center w-14 h-14 rounded-2xl bg-zinc-50 text-zinc-400 hover:text-primary transition-all border border-zinc-100 shadow-sm"
+                    className="flex items-center justify-center w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-zinc-50 text-zinc-400 hover:text-primary transition-all border border-zinc-100 shadow-sm shrink-0"
                   >
-                    <ArrowLeft className="w-6 h-6" />
+                    <ArrowLeft className="w-5 h-5" />
                   </button>
                 )}
-                <div className="flex gap-12 lg:gap-16">
+                <div className="flex gap-4 md:gap-12 lg:gap-16">
                   <div className="flex flex-col">
-                    <span className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em] mb-1">TOTAL ESCOLHIDO</span>
-                    <span className="text-4xl lg:text-5xl font-black text-zinc-900 tracking-tighter">R$ {currentTotal.toFixed(2)}</span>
+                    <span className="text-[8px] md:text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em] mb-0.5">TOTAL</span>
+                    <span className="text-xl md:text-4xl lg:text-5xl font-black text-zinc-900 tracking-tighter">R$ {currentTotal.toFixed(2)}</span>
                   </div>
-                  <div className="w-px h-10 bg-zinc-100 self-center" />
+                  <div className="w-px bg-zinc-100 self-stretch" />
                   <div className="flex flex-col">
-                    <span className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em] mb-1">SALDO DISPONÍVEL</span>
-                    <span className="text-4xl lg:text-5xl font-black text-[#10B981] tracking-tighter">R$ {remainingBenefit.toFixed(2)}</span>
+                    <span className="text-[8px] md:text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em] mb-0.5">SALDO</span>
+                    <span className="text-xl md:text-4xl lg:text-5xl font-black text-[#10B981] tracking-tighter">R$ {remainingBenefit.toFixed(2)}</span>
                   </div>
                 </div>
               </div>
 
               {step === 'catalog' && (
-                <Button 
+                <Button
                   disabled={currentTotal === 0}
                   onClick={() => setStep('review')}
-                  className="bg-primary hover:bg-primary/90 text-white h-16 lg:h-18 px-10 lg:px-12 rounded-[1.75rem] font-black text-xs disabled:opacity-20 shadow-xl shadow-primary/20 transition-all uppercase tracking-[0.2em]"
+                  className="bg-primary hover:bg-primary/90 text-white h-11 md:h-16 px-5 md:px-10 lg:px-12 rounded-2xl font-black text-[10px] md:text-xs disabled:opacity-20 shadow-xl shadow-primary/20 transition-all uppercase tracking-[0.15em] shrink-0"
                 >
-                  REVISAR MEU PLANO
+                  REVISAR
                 </Button>
               )}
             </div>
-            
-            <div className="h-4 w-full bg-zinc-100 rounded-full overflow-hidden flex shadow-inner">
-              <div 
+
+            <div className="h-2 md:h-4 w-full bg-zinc-100 rounded-full overflow-hidden flex shadow-inner">
+              <div
                 className="h-full bg-primary transition-all duration-700 ease-out rounded-full"
                 style={{ width: `${usagePercentage}%` }}
               />
@@ -232,18 +232,18 @@ export function EmployeeFlow() {
       )}
 
       {step === 'catalog' && (
-        <div className="flex-1 overflow-y-auto py-12 lg:py-16 px-6 lg:px-10">
+        <div className="flex-1 overflow-y-auto py-8 md:py-12 lg:py-16 px-4 md:px-6 lg:px-10">
           <div className="max-w-7xl mx-auto">
-            <header className="mb-12">
-              <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-3">CONTRATE SEUS BENEFÍCIOS</p>
-              <h2 className="text-5xl lg:text-6xl font-black text-zinc-900 tracking-tighter leading-tight">Monte sua <span className="text-primary">segurança.</span></h2>
+            <header className="mb-8 md:mb-12">
+              <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-2">CONTRATE SEUS BENEFÍCIOS</p>
+              <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-zinc-900 tracking-tighter leading-tight">Monte sua <span className="text-primary">segurança.</span></h2>
             </header>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 lg:gap-10">
               {INSURANCE_CATALOG.map((item) => {
                 const inCart = !!cart[item.id];
                 return (
-                  <Card 
+                  <Card
                     key={item.id}
                     onClick={() => {
                       setSelectedInsuranceId(item.id);
@@ -251,39 +251,39 @@ export function EmployeeFlow() {
                       setActiveProtections(inCart ? cart[item.id].activeProtections : item.protections.filter(p => p.type === 'essential').map(p => p.id));
                     }}
                     className={cn(
-                      "group p-8 lg:p-10 rounded-[2.5rem] border border-zinc-100 hover:border-primary/20 hover:shadow-2xl transition-all cursor-pointer relative flex flex-col justify-between min-h-[420px] bg-white shadow-xl",
+                      "group p-6 md:p-8 lg:p-10 rounded-[2rem] md:rounded-[2.5rem] border border-zinc-100 hover:border-primary/20 hover:shadow-2xl transition-all cursor-pointer relative flex flex-col justify-between bg-white shadow-xl",
                       inCart ? 'ring-2 ring-primary border-transparent' : ''
                     )}
                   >
-                    <div className="space-y-6 lg:space-y-8">
+                    <div className="space-y-4 md:space-y-6">
                       <div className="flex items-center justify-between">
                         <div className={cn(
-                          "w-16 h-16 rounded-2xl flex items-center justify-center transition-all",
+                          "w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl flex items-center justify-center transition-all",
                           inCart ? "bg-primary text-white" : "bg-zinc-50 text-zinc-400 group-hover:bg-primary/10 group-hover:text-primary"
                         )}>
-                          <item.icon className="w-8 h-8" />
+                          <item.icon className="w-6 h-6 md:w-8 md:h-8" />
                         </div>
                         {inCart && (
-                          <Badge className="bg-primary text-white border-none text-[8px] font-black px-4 py-1.5 rounded-full uppercase tracking-[0.2em]">
+                          <Badge className="bg-primary text-white border-none text-[8px] font-black px-3 py-1 rounded-full uppercase tracking-[0.2em]">
                             ADICIONADO
                           </Badge>
                         )}
                       </div>
                       <div>
-                        <h4 className="text-2xl lg:text-3xl font-black text-zinc-900 mb-2 lg:mb-3 tracking-tighter leading-tight">{item.name}</h4>
-                        <p className="text-sm text-zinc-400 font-medium leading-relaxed line-clamp-4">{item.description}</p>
+                        <h4 className="text-xl md:text-2xl lg:text-3xl font-black text-zinc-900 mb-2 tracking-tighter leading-tight">{item.name}</h4>
+                        <p className="text-xs md:text-sm text-zinc-400 font-medium leading-relaxed line-clamp-3">{item.description}</p>
                       </div>
                     </div>
-                    
-                    <div className="mt-8 pt-6 lg:pt-8 border-t border-zinc-50 flex items-center justify-between">
+
+                    <div className="mt-6 pt-5 border-t border-zinc-50 flex items-center justify-between">
                       <div>
                         <p className="text-[9px] font-black text-zinc-300 uppercase tracking-widest mb-1">PLANO MENSAL</p>
-                        <p className="text-2xl lg:text-3xl font-black text-zinc-900 tracking-tighter">
+                        <p className="text-xl md:text-2xl lg:text-3xl font-black text-zinc-900 tracking-tighter">
                           R$ {item.basePrice.toFixed(2)}
                         </p>
                       </div>
-                      <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-zinc-50 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
-                        <ChevronRight className="w-6 h-6 lg:w-7 lg:h-7" />
+                      <div className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-zinc-50 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
+                        <ChevronRight className="w-5 h-5 md:w-7 md:h-7" />
                       </div>
                     </div>
                   </Card>
@@ -295,59 +295,80 @@ export function EmployeeFlow() {
       )}
 
       {step === 'customize' && selectedInsurance && (
-        <div className="flex-1 flex flex-col lg:flex-row h-[calc(100vh-260px)] overflow-hidden">
-          <div className="flex-1 p-8 lg:p-16 overflow-y-auto bg-zinc-50/50">
-            <div className="max-w-3xl mx-auto space-y-16 lg:space-y-20">
+        <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+          {/* Lista de coberturas */}
+          <div className="flex-1 p-4 md:p-8 lg:p-16 overflow-y-auto bg-zinc-50/50">
+            <div className="max-w-3xl mx-auto space-y-10 lg:space-y-16">
               <section>
-                <div className="flex items-center gap-4 mb-8">
-                  <div className="w-1.5 h-6 bg-primary rounded-full" />
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="w-1.5 h-5 bg-primary rounded-full" />
                   <h3 className="text-[10px] font-black text-zinc-900 uppercase tracking-[0.3em]">COBERTURAS ESSENCIAIS</h3>
                 </div>
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {selectedInsurance.protections.filter(p => p.type === 'essential').map(renderProtectionCard)}
                 </div>
               </section>
 
               <section>
-                <div className="flex items-center gap-4 mb-8">
-                  <div className="w-1.5 h-6 bg-zinc-200 rounded-full" />
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="w-1.5 h-5 bg-zinc-200 rounded-full" />
                   <h3 className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.3em]">ADICIONAIS DISPONÍVEIS</h3>
                 </div>
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {selectedInsurance.protections.filter(p => p.type === 'extra').map(renderProtectionCard)}
                 </div>
               </section>
+
+              {/* Botão fixo visível no mobile (abaixo das coberturas) */}
+              <div className="lg:hidden bg-white rounded-[2rem] p-6 border border-zinc-100 shadow-xl">
+                <div className="flex items-center justify-between mb-5">
+                  <div>
+                    <p className="text-[10px] font-black text-zinc-300 uppercase tracking-widest mb-1">VALOR FINAL</p>
+                    <p className="text-3xl font-black text-primary tracking-tighter">R$ {customPrice.toFixed(2)}</p>
+                  </div>
+                  <div className="text-right text-sm text-zinc-400 font-medium">
+                    {activeProtections.length} cobertura{activeProtections.length !== 1 ? 's' : ''}
+                  </div>
+                </div>
+                <Button
+                  className="w-full h-14 rounded-2xl bg-zinc-900 text-white hover:bg-zinc-800 font-black text-sm shadow-xl transition-all uppercase tracking-widest"
+                  onClick={addToPlan}
+                >
+                  ADICIONAR AO PLANO
+                </Button>
+              </div>
             </div>
           </div>
 
-          <aside className="w-full lg:w-[480px] bg-white border-l border-zinc-100 p-10 lg:p-14 flex flex-col justify-between overflow-y-auto shadow-2xl">
-            <div className="space-y-10 lg:space-y-12">
+          {/* Aside — só aparece no desktop */}
+          <aside className="hidden lg:flex w-[480px] bg-white border-l border-zinc-100 p-14 flex-col justify-between overflow-y-auto shadow-2xl">
+            <div className="space-y-12">
               <div className="w-20 h-20 bg-primary/5 rounded-[1.75rem] flex items-center justify-center text-primary mb-8">
                 <selectedInsurance.icon className="w-10 h-10" />
               </div>
               <div>
-                <h3 className="text-4xl lg:text-5xl font-black text-zinc-900 mb-4 tracking-tighter leading-none">{selectedInsurance.name}</h3>
-                <p className="text-zinc-400 text-base lg:text-lg font-medium leading-relaxed">{selectedInsurance.description}</p>
+                <h3 className="text-5xl font-black text-zinc-900 mb-4 tracking-tighter leading-none">{selectedInsurance.name}</h3>
+                <p className="text-zinc-400 text-lg font-medium leading-relaxed">{selectedInsurance.description}</p>
               </div>
-              
+
               <div className="space-y-4 pt-8 border-t border-zinc-50">
                 <p className="text-[10px] font-black text-zinc-300 uppercase tracking-[0.3em] mb-4">ITENS ATIVOS</p>
                 {selectedInsurance.protections.filter(p => activeProtections.includes(p.id)).map(p => (
                   <div key={p.id} className="flex justify-between items-center py-1">
-                    <span className="text-zinc-600 font-bold text-base lg:text-lg">{p.name}</span>
-                    <span className="text-zinc-900 font-black text-base lg:text-lg">R$ {p.price.toFixed(2)}</span>
+                    <span className="text-zinc-600 font-bold text-lg">{p.name}</span>
+                    <span className="text-zinc-900 font-black text-lg">R$ {p.price.toFixed(2)}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             <div className="pt-12">
-              <div className="mb-8 lg:mb-10">
+              <div className="mb-10">
                 <p className="text-[10px] font-black text-zinc-300 uppercase tracking-widest mb-2">VALOR FINAL DO ITEM</p>
-                <p className="text-5xl lg:text-6xl font-black text-primary tracking-tighter">R$ {customPrice.toFixed(2)}</p>
+                <p className="text-6xl font-black text-primary tracking-tighter">R$ {customPrice.toFixed(2)}</p>
               </div>
-              <Button 
-                className="w-full h-20 lg:h-24 rounded-[2rem] bg-zinc-900 text-white hover:bg-zinc-800 font-black text-lg lg:text-xl shadow-2xl transition-all uppercase tracking-widest"
+              <Button
+                className="w-full h-24 rounded-[2rem] bg-zinc-900 text-white hover:bg-zinc-800 font-black text-xl shadow-2xl transition-all uppercase tracking-widest"
                 onClick={addToPlan}
               >
                 ADICIONAR AO PLANO
@@ -358,31 +379,31 @@ export function EmployeeFlow() {
       )}
 
       {step === 'review' && (
-        <div className="flex-1 p-8 lg:p-16 overflow-y-auto bg-zinc-50/30">
+        <div className="flex-1 p-4 md:p-8 lg:p-16 overflow-y-auto bg-zinc-50/30">
           <div className="max-w-4xl mx-auto">
-            <header className="mb-16">
-              <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-3">REVISÃO FINAL</p>
-              <h2 className="text-5xl lg:text-6xl font-black text-zinc-900 tracking-tighter leading-tight">Seu pacote de <span className="text-primary">proteção.</span></h2>
+            <header className="mb-8 md:mb-16">
+              <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-2">REVISÃO FINAL</p>
+              <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-zinc-900 tracking-tighter leading-tight">Seu pacote de <span className="text-primary">proteção.</span></h2>
             </header>
 
-            <div className="space-y-6 mb-16">
+            <div className="space-y-4 mb-8 md:mb-16">
               {Object.entries(cart).map(([id, item]) => {
                 const category = INSURANCE_CATALOG.find(c => c.id === id);
                 if (!category) return null;
                 return (
-                  <div key={id} className="bg-white rounded-[2.5rem] p-10 flex items-center justify-between border border-zinc-100 shadow-xl group hover:shadow-2xl transition-all">
-                    <div className="flex items-center gap-8">
-                      <div className="w-16 h-16 bg-zinc-50 rounded-2xl flex items-center justify-center text-zinc-900 group-hover:bg-primary/10 group-hover:text-primary transition-colors">
-                        <category.icon className="w-8 h-8" />
+                  <div key={id} className="bg-white rounded-[1.5rem] md:rounded-[2.5rem] p-5 md:p-10 flex items-center justify-between border border-zinc-100 shadow-xl group hover:shadow-2xl transition-all">
+                    <div className="flex items-center gap-4 md:gap-8">
+                      <div className="w-12 h-12 md:w-16 md:h-16 bg-zinc-50 rounded-xl md:rounded-2xl flex items-center justify-center text-zinc-900 group-hover:bg-primary/10 group-hover:text-primary transition-colors shrink-0">
+                        <category.icon className="w-6 h-6 md:w-8 md:h-8" />
                       </div>
                       <div>
-                        <h4 className="text-2xl font-black text-zinc-900 tracking-tighter">{category.name}</h4>
-                        <p className="text-sm text-zinc-400 font-medium">{item.activeProtections.length} coberturas incluídas</p>
+                        <h4 className="text-lg md:text-2xl font-black text-zinc-900 tracking-tighter">{category.name}</h4>
+                        <p className="text-xs md:text-sm text-zinc-400 font-medium">{item.activeProtections.length} coberturas</p>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <p className="text-3xl font-black text-zinc-900 tracking-tighter">R$ {item.price.toFixed(2)}</p>
-                      <button 
+                    <div className="text-right shrink-0">
+                      <p className="text-xl md:text-3xl font-black text-zinc-900 tracking-tighter">R$ {item.price.toFixed(2)}</p>
+                      <button
                         onClick={() => {
                           const newCart = { ...cart };
                           delete newCart[id];
@@ -398,15 +419,15 @@ export function EmployeeFlow() {
               })}
             </div>
 
-            <div className="bg-white rounded-[3rem] p-12 lg:p-16 border border-zinc-100 flex flex-col md:flex-row items-center justify-between gap-12 shadow-[0_35px_60px_-15px_rgba(0,0,0,0.1)] relative overflow-hidden">
+            <div className="bg-white rounded-[2rem] md:rounded-[3rem] p-8 md:p-12 lg:p-16 border border-zinc-100 flex flex-col gap-6 md:gap-12 shadow-[0_35px_60px_-15px_rgba(0,0,0,0.1)] relative overflow-hidden">
               <div className="relative z-10">
                 <p className="text-zinc-400 font-black uppercase tracking-widest text-[10px] mb-2">INVESTIMENTO MENSAL TOTAL</p>
-                <h3 className="text-6xl lg:text-7xl font-black text-zinc-900 tracking-tighter">R$ {currentTotal.toFixed(2)}</h3>
-                <p className="text-zinc-400 mt-4 font-medium italic text-lg">* Descontado do seu saldo flexível</p>
+                <h3 className="text-4xl md:text-6xl lg:text-7xl font-black text-zinc-900 tracking-tighter">R$ {currentTotal.toFixed(2)}</h3>
+                <p className="text-zinc-400 mt-2 font-medium italic text-sm md:text-lg">* Descontado do seu saldo flexível</p>
               </div>
-              <Button 
+              <Button
                 onClick={() => setStep('confirmation')}
-                className="relative z-10 w-full md:w-auto h-20 lg:h-24 px-12 lg:px-16 rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-black text-lg lg:text-xl shadow-2xl shadow-primary/20 transition-all uppercase tracking-widest"
+                className="relative z-10 w-full h-16 md:h-20 lg:h-24 px-8 md:px-16 rounded-[1.5rem] md:rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-black text-base md:text-xl shadow-2xl shadow-primary/20 transition-all uppercase tracking-widest"
               >
                 CONFIRMAR E ATIVAR
               </Button>
