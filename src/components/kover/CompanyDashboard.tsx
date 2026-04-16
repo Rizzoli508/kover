@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { Users, ShieldCheck, TrendingUp, Star, PlusCircle, PieChart, Activity, Loader2, CheckCircle2 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter } from '@/components/ui/sheet';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
@@ -59,7 +59,7 @@ export function CompanyDashboard() {
     <div className="flex-1 p-8 lg:p-16 bg-[#F4F4F5] overflow-y-auto">
       <header className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 lg:mb-20">
         <div>
-          <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-4">CENTRAL DA EMPRESA</p>
+          <p className="text-xs font-black text-primary uppercase tracking-[0.3em] mb-4">CENTRAL DA EMPRESA</p>
           <h1 className="text-5xl lg:text-7xl font-black text-zinc-900 tracking-tighter leading-none">TechLog Transportes</h1>
         </div>
         <Button 
@@ -136,18 +136,18 @@ export function CompanyDashboard() {
         </div>
       </div>
 
-      <Sheet open={isModalOpen} onOpenChange={(open) => !isLoading && setIsModalOpen(open)}>
-        <SheetContent className="w-full sm:max-w-md rounded-l-[2rem] border-l-0 p-6 md:p-10 flex flex-col bg-white shadow-2xl overflow-y-auto">
+      <Dialog open={isModalOpen} onOpenChange={(open) => !isLoading && setIsModalOpen(open)}>
+        <DialogContent className="max-w-lg w-full rounded-[2rem] p-8 md:p-10 bg-white shadow-2xl overflow-y-auto max-h-[90vh]">
           {isSuccess ? (
-            <div className="flex-1 flex flex-col items-center justify-center text-center space-y-6">
-              <div className="w-24 h-24 bg-green-50 rounded-full flex items-center justify-center text-green-500 mb-4 animate-in zoom-in-50 duration-500">
+            <div className="flex flex-col items-center justify-center text-center space-y-6 py-8">
+              <div className="w-24 h-24 bg-green-50 rounded-full flex items-center justify-center text-green-500 animate-in zoom-in-50 duration-500">
                 <CheckCircle2 className="w-12 h-12" />
               </div>
               <h3 className="text-3xl font-black text-zinc-900 tracking-tighter">Conta criada com sucesso!</h3>
               <p className="text-zinc-500 font-medium">O acesso do colaborador já está liberado na plataforma.</p>
             </div>
           ) : isLoading ? (
-            <div className="flex-1 flex flex-col items-center justify-center text-center space-y-6">
+            <div className="flex flex-col items-center justify-center text-center space-y-6 py-8">
               <div className="relative">
                 <Loader2 className="w-20 h-20 text-primary animate-spin" />
                 <div className="absolute inset-0 flex items-center justify-center">
@@ -159,70 +159,42 @@ export function CompanyDashboard() {
             </div>
           ) : (
             <>
-              <SheetHeader className="mb-10">
+              <DialogHeader className="mb-8">
                 <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-3">NOVO COLABORADOR</p>
-                <SheetTitle className="text-4xl font-black text-zinc-900 tracking-tighter leading-none">Cadastro MVP</SheetTitle>
-                <SheetDescription className="text-zinc-500 text-lg font-medium leading-relaxed mt-4">
+                <DialogTitle className="text-4xl font-black text-zinc-900 tracking-tighter leading-none">Cadastro MVP</DialogTitle>
+                <DialogDescription className="text-zinc-500 text-lg font-medium leading-relaxed mt-4">
                   Insira os dados básicos para liberar o acesso ao benefício flexível Kover.
-                </SheetDescription>
-              </SheetHeader>
+                </DialogDescription>
+              </DialogHeader>
 
-              <form onSubmit={handleCreateEmployee} className="flex-1 space-y-5 md:space-y-8">
-                <div className="space-y-4">
+              <form onSubmit={handleCreateEmployee} className="space-y-5">
+                <div className="space-y-3">
                   <Label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">CPF DO FUNCIONÁRIO</Label>
-                  <Input 
-                    required
-                    placeholder="000.000.000-00" 
-                    className="h-16 rounded-2xl bg-zinc-50 border-none px-6 text-lg font-bold focus-visible:ring-2 focus-visible:ring-primary"
-                    value={formData.cpf}
-                    onChange={(e) => setFormData({...formData, cpf: e.target.value})}
-                  />
+                  <Input required placeholder="000.000.000-00" className="h-14 rounded-2xl bg-zinc-50 border-none px-6 text-lg font-bold focus-visible:ring-2 focus-visible:ring-primary" value={formData.cpf} onChange={(e) => setFormData({...formData, cpf: e.target.value})} />
                 </div>
-                <div className="space-y-4">
+                <div className="space-y-3">
                   <Label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">CEP RESIDENCIAL</Label>
-                  <Input 
-                    required
-                    placeholder="00000-000" 
-                    className="h-16 rounded-2xl bg-zinc-50 border-none px-6 text-lg font-bold focus-visible:ring-2 focus-visible:ring-primary"
-                    value={formData.cep}
-                    onChange={(e) => setFormData({...formData, cep: e.target.value})}
-                  />
+                  <Input required placeholder="00000-000" className="h-14 rounded-2xl bg-zinc-50 border-none px-6 text-lg font-bold focus-visible:ring-2 focus-visible:ring-primary" value={formData.cep} onChange={(e) => setFormData({...formData, cep: e.target.value})} />
                 </div>
-                <div className="space-y-4">
+                <div className="space-y-3">
                   <Label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">VALOR DO BENEFÍCIO (R$)</Label>
-                  <Input 
-                    required
-                    type="number"
-                    placeholder="Ex: 80.00" 
-                    className="h-16 rounded-2xl bg-zinc-50 border-none px-6 text-lg font-bold focus-visible:ring-2 focus-visible:ring-primary"
-                    value={formData.benefitValue}
-                    onChange={(e) => setFormData({...formData, benefitValue: e.target.value})}
-                  />
+                  <Input required type="number" placeholder="Ex: 120.00" className="h-14 rounded-2xl bg-zinc-50 border-none px-6 text-lg font-bold focus-visible:ring-2 focus-visible:ring-primary" value={formData.benefitValue} onChange={(e) => setFormData({...formData, benefitValue: e.target.value})} />
                 </div>
-
-                <div className="pt-8 space-y-4">
-                  <div className="p-6 bg-zinc-50 rounded-2xl border border-zinc-100">
-                    <p className="text-[9px] font-black text-zinc-400 uppercase tracking-widest mb-2">CREDENCIAIS GERADAS</p>
-                    <div className="flex justify-between items-center">
-                      <span className="text-zinc-600 font-bold">Login: CXXXXXX</span>
-                      <span className="text-zinc-600 font-bold">Senha: 123456</span>
-                    </div>
+                <div className="p-5 bg-zinc-50 rounded-2xl border border-zinc-100">
+                  <p className="text-[9px] font-black text-zinc-400 uppercase tracking-widest mb-2">CREDENCIAIS GERADAS</p>
+                  <div className="flex justify-between items-center">
+                    <span className="text-zinc-600 font-bold">Login: CXXXXXX</span>
+                    <span className="text-zinc-600 font-bold">Senha: 123456</span>
                   </div>
                 </div>
-              </form>
-
-              <SheetFooter className="pt-6 md:pt-10">
-                <Button
-                  onClick={handleCreateEmployee}
-                  className="w-full h-14 md:h-20 rounded-2xl bg-zinc-900 text-white hover:bg-zinc-800 font-black text-sm md:text-lg shadow-2xl transition-all uppercase tracking-widest"
-                >
+                <Button onClick={handleCreateEmployee} className="w-full h-14 rounded-2xl bg-zinc-900 text-white hover:bg-zinc-800 font-black text-sm shadow-2xl transition-all uppercase tracking-widest mt-2">
                   FINALIZAR CADASTRO
                 </Button>
-              </SheetFooter>
+              </form>
             </>
           )}
-        </SheetContent>
-      </Sheet>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
