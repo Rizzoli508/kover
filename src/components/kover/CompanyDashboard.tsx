@@ -184,7 +184,7 @@ export function CompanyDashboard() {
                   <p className="text-[9px] font-black text-zinc-400 uppercase tracking-widest mb-2">CREDENCIAIS GERADAS</p>
                   <div className="flex justify-between items-center">
                     <span className="text-zinc-600 font-bold">Login: CXXXXXX</span>
-                    <span className="text-zinc-600 font-bold">Senha: 123456</span>
+                    <span className="text-zinc-600 font-bold">Senha: XXXXXX</span>
                   </div>
                 </div>
                 <Button onClick={handleCreateEmployee} className="w-full h-14 rounded-2xl bg-zinc-900 text-white hover:bg-zinc-800 font-black text-sm shadow-2xl transition-all uppercase tracking-widest mt-2">
