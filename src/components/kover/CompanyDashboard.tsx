@@ -9,8 +9,17 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-export function CompanyDashboard() {
+interface CompanyDashboardProps {
+  onModalChange?: (open: boolean) => void;
+}
+
+export function CompanyDashboard({ onModalChange }: CompanyDashboardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleSetModalOpen = (open: boolean) => {
+    setIsModalOpen(open);
+    onModalChange?.(open);
+  };
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   
@@ -49,7 +58,7 @@ export function CompanyDashboard() {
       setIsSuccess(true);
       setTimeout(() => {
         setIsSuccess(false);
-        setIsModalOpen(false);
+        handleSetModalOpen(false);
         setFormData({ cpf: '', cep: '', benefitValue: '' });
       }, 2000);
     }, 2500);
@@ -63,7 +72,7 @@ export function CompanyDashboard() {
           <h1 className="text-5xl lg:text-7xl font-black text-zinc-900 tracking-tighter leading-none">TechLog Transportes</h1>
         </div>
         <Button 
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => handleSetModalOpen(true)}
           className="h-16 lg:h-20 px-10 lg:px-12 rounded-[1.75rem] bg-primary hover:bg-primary/90 font-black text-xs uppercase tracking-[0.2em] gap-4 shadow-2xl shadow-primary/20 transition-all text-white"
         >
           <PlusCircle className="w-6 h-6" />
@@ -136,8 +145,8 @@ export function CompanyDashboard() {
         </div>
       </div>
 
-      <Dialog open={isModalOpen} onOpenChange={(open) => !isLoading && setIsModalOpen(open)}>
-        <DialogContent className="max-w-lg w-[calc(100%-2rem)] rounded-[2rem] p-6 md:p-10 bg-white shadow-2xl flex flex-col max-h-[85vh] overflow-hidden">
+      <Dialog open={isModalOpen} onOpenChange={(open) => !isLoading && handleSetModalOpen(open)}>
+        <DialogContent className="max-w-lg w-[calc(100%-2rem)] rounded-[2rem] p-6 md:p-10 bg-white shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
           <div className="overflow-y-auto flex-1 pr-1">
           {isSuccess ? (
             <div className="flex flex-col items-center justify-center text-center space-y-6 py-8">

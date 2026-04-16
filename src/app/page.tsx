@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 
 export default function Home() {
   const [view, setView] = useState<'landing' | 'employee' | 'company'>('landing');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   if (view === 'landing') {
     return (
@@ -67,7 +68,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#F4F4F5]">
-      <nav className="bg-white border-b border-zinc-100 h-20 sticky top-0 z-[100]">
+      <nav className={`bg-white border-b border-zinc-100 h-20 sticky top-0 z-[100] transition-opacity ${isModalOpen ? 'opacity-0 pointer-events-none' : ''}`}>
         <div className="max-w-7xl mx-auto h-full px-8 flex items-center justify-between">
           <div 
             className="flex items-center gap-3 cursor-pointer"
@@ -93,7 +94,7 @@ export default function Home() {
         </div>
       </nav>
 
-      {view === 'employee' ? <EmployeeFlow /> : <CompanyDashboard />}
+      {view === 'employee' ? <EmployeeFlow /> : <CompanyDashboard onModalChange={setIsModalOpen} />}
     </div>
   );
 }
