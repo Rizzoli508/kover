@@ -174,9 +174,11 @@ export function EmployeeFlow() {
               <p className="text-center text-zinc-400 text-xs mt-10 font-medium">
                 Primeiro acesso? Use o ID fornecido pelo seu RH.
               </p>
-              <p className="text-center text-zinc-300 text-[10px] mt-2 font-medium">
-                💡 Demo: digite qualquer ID e senha para entrar.
-              </p>
+              <div className="mt-4 px-4 py-3 bg-primary/5 rounded-2xl text-center">
+                <p className="text-primary text-xs font-bold">
+                  💡 Demo: digite qualquer ID e senha para entrar.
+                </p>
+              </div>
             </>
           )}
         </Card>
