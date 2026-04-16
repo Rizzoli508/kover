@@ -282,9 +282,9 @@ export function EmployeeFlow() {
 
                     <div className="mt-6 pt-5 border-t border-zinc-50 flex items-center justify-between">
                       <div>
-                        <p className="text-[9px] font-black text-zinc-300 uppercase tracking-widest mb-1">VALOR MÍNIMO</p>
-                        <p className="text-xl md:text-2xl lg:text-3xl font-black text-zinc-900 tracking-tighter">
-                          R$ {item.basePrice.toFixed(2)}
+                        <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-1">COMECE COM</p>
+                        <p className="text-2xl md:text-3xl lg:text-3xl font-black text-zinc-900 tracking-tighter">
+                          R$ {Math.min(...item.protections.map(p => p.price)).toFixed(2)}
                         </p>
                       </div>
                       <div className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-zinc-50 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
