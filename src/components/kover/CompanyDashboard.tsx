@@ -29,9 +29,9 @@ export function CompanyDashboard() {
           <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-4">CENTRAL DA EMPRESA</p>
           <h1 className="text-5xl lg:text-7xl font-black text-zinc-900 tracking-tighter leading-none">TechLog Transportes</h1>
         </div>
-        <Button className="h-16 lg:h-20 px-10 lg:px-12 rounded-[1.75rem] bg-primary hover:bg-primary/90 font-black text-xs uppercase tracking-[0.2em] gap-4 shadow-2xl shadow-primary/20 transition-all">
+        <Button className="h-16 lg:h-20 px-10 lg:px-12 rounded-[1.75rem] bg-primary hover:bg-primary/90 font-black text-xs uppercase tracking-[0.2em] gap-4 shadow-2xl shadow-primary/20 transition-all text-white">
           <PlusCircle className="w-6 h-6" />
-          GERENCIAR EQUIPE
+          CADASTRAR FUNCIONÁRIO
         </Button>
       </header>
 
