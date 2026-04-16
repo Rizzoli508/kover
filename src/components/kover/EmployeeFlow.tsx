@@ -275,7 +275,7 @@ export function EmployeeFlow() {
                         )}
                       </div>
                       <div>
-                        <h4 className="text-xl md:text-2xl lg:text-3xl font-black text-zinc-900 mb-2 tracking-tighter leading-tight">{item.name}</h4>
+                        <h4 className="text-xl md:text-2xl lg:text-3xl font-black text-primary mb-2 tracking-tighter leading-tight">{item.name}</h4>
                         <p className="text-xs md:text-sm text-zinc-400 font-medium leading-relaxed line-clamp-3">{item.description}</p>
                       </div>
                     </div>
