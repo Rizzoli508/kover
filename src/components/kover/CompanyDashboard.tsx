@@ -137,7 +137,8 @@ export function CompanyDashboard() {
       </div>
 
       <Dialog open={isModalOpen} onOpenChange={(open) => !isLoading && setIsModalOpen(open)}>
-        <DialogContent className="max-w-lg w-full rounded-[2rem] p-8 md:p-10 bg-white shadow-2xl overflow-y-auto max-h-[90vh]">
+        <DialogContent className="max-w-lg w-[calc(100%-2rem)] rounded-[2rem] p-6 md:p-10 bg-white shadow-2xl flex flex-col max-h-[85vh] overflow-hidden">
+          <div className="overflow-y-auto flex-1 pr-1">
           {isSuccess ? (
             <div className="flex flex-col items-center justify-center text-center space-y-6 py-8">
               <div className="w-24 h-24 bg-green-50 rounded-full flex items-center justify-center text-green-500 animate-in zoom-in-50 duration-500">
@@ -193,6 +194,7 @@ export function CompanyDashboard() {
               </form>
             </>
           )}
+          </div>
         </DialogContent>
       </Dialog>
     </div>
