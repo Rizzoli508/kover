@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useMemo } from 'react';
@@ -69,7 +68,6 @@ export function EmployeeFlow() {
         <Switch 
           checked={activeProtections.includes(p.id)} 
           onCheckedChange={() => toggleProtection(p.id)}
-          className="data-[state=checked]:bg-primary h-8 w-14"
         />
       </div>
       <div className="px-8 pb-8 pt-0">
@@ -82,7 +80,7 @@ export function EmployeeFlow() {
     <div className="flex-1 flex flex-col h-full bg-[#F4F4F5]">
       {/* Cabeçalho de Orçamento */}
       {(step !== 'confirmation') && (
-        <div className="bg-white border-b border-zinc-100 sticky top-20 z-[90] py-8 lg:py-12 shadow-sm">
+        <div className="bg-white border-b border-zinc-100 sticky top-20 z-[90] py-8 lg:py-10 shadow-sm">
           <div className="max-w-7xl mx-auto px-6 lg:px-10">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-8">
               <div className="flex items-center gap-8">
@@ -96,7 +94,7 @@ export function EmployeeFlow() {
                 )}
                 <div className="flex gap-12 lg:gap-16">
                   <div className="flex flex-col">
-                    <span className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em] mb-1">PLANO ESCOLHIDO</span>
+                    <span className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em] mb-1">TOTAL ESCOLHIDO</span>
                     <span className="text-4xl lg:text-5xl font-black text-zinc-900 tracking-tighter">R$ {currentTotal.toFixed(2)}</span>
                   </div>
                   <div className="w-px h-10 bg-zinc-100 self-center" />
@@ -111,7 +109,7 @@ export function EmployeeFlow() {
                 <Button 
                   disabled={currentTotal === 0}
                   onClick={() => setStep('review')}
-                  className="bg-primary hover:bg-primary/90 text-white h-16 lg:h-20 px-10 lg:px-12 rounded-[1.75rem] font-black text-xs disabled:opacity-20 shadow-xl shadow-primary/20 transition-all uppercase tracking-[0.2em]"
+                  className="bg-primary hover:bg-primary/90 text-white h-16 lg:h-18 px-10 lg:px-12 rounded-[1.75rem] font-black text-xs disabled:opacity-20 shadow-xl shadow-primary/20 transition-all uppercase tracking-[0.2em]"
                 >
                   REVISAR MEU PLANO
                 </Button>
@@ -132,8 +130,8 @@ export function EmployeeFlow() {
         <div className="flex-1 overflow-y-auto py-12 lg:py-16 px-6 lg:px-10">
           <div className="max-w-7xl mx-auto">
             <header className="mb-12">
-              <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-3">CATÁLOGO DE BENEFÍCIOS</p>
-              <h2 className="text-5xl lg:text-6xl font-black text-zinc-900 tracking-tighter leading-tight">Escolha sua <span className="text-primary">proteção.</span></h2>
+              <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-3">CONTRATE SEUS BENEFÍCIOS</p>
+              <h2 className="text-5xl lg:text-6xl font-black text-zinc-900 tracking-tighter leading-tight">Monte sua <span className="text-primary">segurança.</span></h2>
             </header>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
@@ -148,7 +146,7 @@ export function EmployeeFlow() {
                       setActiveProtections(inCart ? cart[item.id].activeProtections : item.protections.filter(p => p.type === 'essential').map(p => p.id));
                     }}
                     className={cn(
-                      "group p-8 lg:p-10 rounded-[2.5rem] border border-zinc-50 hover:border-primary/20 hover:shadow-2xl transition-all cursor-pointer relative flex flex-col justify-between min-h-[380px] bg-white shadow-xl",
+                      "group p-8 lg:p-10 rounded-[2.5rem] border border-zinc-100 hover:border-primary/20 hover:shadow-2xl transition-all cursor-pointer relative flex flex-col justify-between min-h-[420px] bg-white shadow-xl",
                       inCart ? 'ring-2 ring-primary border-transparent' : ''
                     )}
                   >
@@ -162,21 +160,21 @@ export function EmployeeFlow() {
                         </div>
                         {inCart && (
                           <Badge className="bg-primary text-white border-none text-[8px] font-black px-4 py-1.5 rounded-full uppercase tracking-[0.2em]">
-                            NO PLANO
+                            ADICIONADO
                           </Badge>
                         )}
                       </div>
                       <div>
                         <h4 className="text-2xl lg:text-3xl font-black text-zinc-900 mb-2 lg:mb-3 tracking-tighter leading-tight">{item.name}</h4>
-                        <p className="text-sm text-zinc-400 font-medium leading-relaxed line-clamp-3">{item.description}</p>
+                        <p className="text-sm text-zinc-400 font-medium leading-relaxed line-clamp-4">{item.description}</p>
                       </div>
                     </div>
                     
                     <div className="mt-8 pt-6 lg:pt-8 border-t border-zinc-50 flex items-center justify-between">
                       <div>
-                        <p className="text-[9px] font-black text-zinc-300 uppercase tracking-widest mb-1">A PARTIR DE</p>
+                        <p className="text-[9px] font-black text-zinc-300 uppercase tracking-widest mb-1">PLANO MENSAL</p>
                         <p className="text-2xl lg:text-3xl font-black text-zinc-900 tracking-tighter">
-                          R$ {item.basePrice}<span className="text-xs lg:text-sm font-bold text-zinc-300 ml-1">/{item.unit}</span>
+                          R$ {item.basePrice.toFixed(2)}
                         </p>
                       </div>
                       <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-zinc-50 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
@@ -193,12 +191,12 @@ export function EmployeeFlow() {
 
       {step === 'customize' && selectedInsurance && (
         <div className="flex-1 flex flex-col lg:flex-row h-[calc(100vh-260px)] overflow-hidden">
-          <div className="flex-1 p-8 lg:p-16 overflow-y-auto bg-white/50">
+          <div className="flex-1 p-8 lg:p-16 overflow-y-auto bg-zinc-50/50">
             <div className="max-w-3xl mx-auto space-y-16 lg:space-y-20">
               <section>
                 <div className="flex items-center gap-4 mb-8">
                   <div className="w-1.5 h-6 bg-primary rounded-full" />
-                  <h3 className="text-[10px] font-black text-zinc-900 uppercase tracking-[0.3em]">Proteções Essenciais</h3>
+                  <h3 className="text-[10px] font-black text-zinc-900 uppercase tracking-[0.3em]">COBERTURAS ESSENCIAIS</h3>
                 </div>
                 <div className="space-y-4">
                   {selectedInsurance.protections.filter(p => p.type === 'essential').map(renderProtectionCard)}
@@ -208,7 +206,7 @@ export function EmployeeFlow() {
               <section>
                 <div className="flex items-center gap-4 mb-8">
                   <div className="w-1.5 h-6 bg-zinc-200 rounded-full" />
-                  <h3 className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.3em]">Adicionais Extras</h3>
+                  <h3 className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.3em]">ADICIONAIS DISPONÍVEIS</h3>
                 </div>
                 <div className="space-y-4">
                   {selectedInsurance.protections.filter(p => p.type === 'extra').map(renderProtectionCard)}
@@ -228,7 +226,7 @@ export function EmployeeFlow() {
               </div>
               
               <div className="space-y-4 pt-8 border-t border-zinc-50">
-                <p className="text-[10px] font-black text-zinc-300 uppercase tracking-[0.3em] mb-4">COBERTURAS SELECIONADAS</p>
+                <p className="text-[10px] font-black text-zinc-300 uppercase tracking-[0.3em] mb-4">ITENS ATIVOS</p>
                 {selectedInsurance.protections.filter(p => activeProtections.includes(p.id)).map(p => (
                   <div key={p.id} className="flex justify-between items-center py-1">
                     <span className="text-zinc-600 font-bold text-base lg:text-lg">{p.name}</span>
@@ -240,7 +238,7 @@ export function EmployeeFlow() {
 
             <div className="pt-12">
               <div className="mb-8 lg:mb-10">
-                <p className="text-[10px] font-black text-zinc-300 uppercase tracking-widest mb-2">VALOR TOTAL DO ITEM</p>
+                <p className="text-[10px] font-black text-zinc-300 uppercase tracking-widest mb-2">VALOR FINAL DO ITEM</p>
                 <p className="text-5xl lg:text-6xl font-black text-primary tracking-tighter">R$ {customPrice.toFixed(2)}</p>
               </div>
               <Button 
@@ -258,8 +256,8 @@ export function EmployeeFlow() {
         <div className="flex-1 p-8 lg:p-16 overflow-y-auto">
           <div className="max-w-4xl mx-auto">
             <header className="mb-16">
-              <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-3">QUASE LÁ</p>
-              <h2 className="text-5xl lg:text-6xl font-black text-zinc-900 tracking-tighter leading-tight">Revise seu <span className="text-primary">pacote.</span></h2>
+              <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-3">REVISÃO FINAL</p>
+              <h2 className="text-5xl lg:text-6xl font-black text-zinc-900 tracking-tighter leading-tight">Seu pacote de <span className="text-primary">proteção.</span></h2>
             </header>
 
             <div className="space-y-6 mb-16">
@@ -274,7 +272,7 @@ export function EmployeeFlow() {
                       </div>
                       <div>
                         <h4 className="text-2xl font-black text-zinc-900 tracking-tighter">{category.name}</h4>
-                        <p className="text-sm text-zinc-400 font-medium">{item.activeProtections.length} coberturas selecionadas</p>
+                        <p className="text-sm text-zinc-400 font-medium">{item.activeProtections.length} coberturas incluídas</p>
                       </div>
                     </div>
                     <div className="text-right">
@@ -299,7 +297,7 @@ export function EmployeeFlow() {
               <div>
                 <p className="text-zinc-400 font-black uppercase tracking-widest text-[10px] mb-2">INVESTIMENTO MENSAL TOTAL</p>
                 <h3 className="text-6xl lg:text-7xl font-black tracking-tighter">R$ {currentTotal.toFixed(2)}</h3>
-                <p className="text-white/40 mt-4 font-medium italic text-lg">* Descontado diretamente do seu saldo Kover</p>
+                <p className="text-white/40 mt-4 font-medium italic text-lg">* Descontado do seu saldo flexível</p>
               </div>
               <Button 
                 onClick={() => setStep('confirmation')}
@@ -318,8 +316,8 @@ export function EmployeeFlow() {
             <div className="w-32 h-32 bg-[#10B981]/10 rounded-full flex items-center justify-center mx-auto mb-12">
               <CheckCircle2 className="w-16 h-16 text-[#10B981]" />
             </div>
-            <h2 className="text-5xl lg:text-6xl font-black text-zinc-900 mb-6 tracking-tighter leading-[0.9]">Proteção ativada com <span className="text-[#10B981]">sucesso!</span></h2>
-            <p className="text-xl lg:text-2xl text-zinc-500 mb-12 font-medium leading-relaxed">Você já está seguro. Suas apólices foram enviadas para o seu e-mail corporativo.</p>
+            <h2 className="text-5xl lg:text-6xl font-black text-zinc-900 mb-6 tracking-tighter leading-[0.9]">Benefícios ativados com <span className="text-[#10B981]">sucesso!</span></h2>
+            <p className="text-xl lg:text-2xl text-zinc-500 mb-12 font-medium leading-relaxed">Sua proteção já está valendo. Os certificados foram enviados para o seu e-mail.</p>
             <Button 
               onClick={() => window.location.reload()}
               className="h-16 lg:h-20 px-12 rounded-[1.5rem] bg-zinc-900 hover:bg-zinc-800 text-white font-black text-xs uppercase tracking-[0.2em] shadow-xl"
