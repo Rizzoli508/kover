@@ -25,7 +25,7 @@ export function EmployeeFlow() {
   const [selectedInsuranceId, setSelectedInsuranceId] = useState<string | null>(null);
   const [cart, setCart] = useState<Record<string, { price: number, activeProtections: string[] }>>({});
   
-  const BENEFIT_AMOUNT = employee?.benefitBalanceAvailable || 80;
+  const BENEFIT_AMOUNT = employee?.benefitBalanceAvailable || 120;
   const [activeProtections, setActiveProtections] = useState<string[]>([]);
 
   const selectedInsurance = useMemo(() => 
@@ -52,7 +52,7 @@ export function EmployeeFlow() {
       setIsLoggingIn(false);
       setLoginSuccess(true);
       setTimeout(() => {
-        setEmployee({ loginId: loginData.loginId, benefitBalanceAvailable: 80 });
+        setEmployee({ loginId: loginData.loginId, benefitBalanceAvailable: 120 });
         setStep('catalog');
       }, 1400);
     }, 1000);
@@ -282,7 +282,7 @@ export function EmployeeFlow() {
 
                     <div className="mt-6 pt-5 border-t border-zinc-50 flex items-center justify-between">
                       <div>
-                        <p className="text-[9px] font-black text-zinc-300 uppercase tracking-widest mb-1">PLANO MENSAL</p>
+                        <p className="text-[9px] font-black text-zinc-300 uppercase tracking-widest mb-1">VALOR MÍNIMO</p>
                         <p className="text-xl md:text-2xl lg:text-3xl font-black text-zinc-900 tracking-tighter">
                           R$ {item.basePrice.toFixed(2)}
                         </p>
