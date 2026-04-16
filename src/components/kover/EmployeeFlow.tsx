@@ -2,22 +2,32 @@
 "use client";
 
 import React, { useState, useMemo } from 'react';
-import { ChevronRight, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { ChevronRight, ArrowLeft, CheckCircle2, Lock, User, Loader2, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { INSURANCE_CATALOG, Protection } from '@/lib/insurance-data';
 import { cn } from '@/lib/utils';
+import { useFirestore } from '@/firebase';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 
-type Step = 'catalog' | 'customize' | 'review' | 'confirmation';
+type Step = 'login' | 'catalog' | 'customize' | 'review' | 'confirmation';
 
 export function EmployeeFlow() {
-  const [step, setStep] = useState<Step>('catalog');
+  const db = useFirestore();
+  const [step, setStep] = useState<Step>('login');
+  const [loginData, setLoginData] = useState({ loginId: '', password: '' });
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [loginError, setLoginError] = useState('');
+  const [employee, setEmployee] = useState<any>(null);
+
   const [selectedInsuranceId, setSelectedInsuranceId] = useState<string | null>(null);
   const [cart, setCart] = useState<Record<string, { price: number, activeProtections: string[] }>>({});
   
-  const BENEFIT_AMOUNT = 80;
+  const BENEFIT_AMOUNT = employee?.benefitBalanceAvailable || 80;
   const [activeProtections, setActiveProtections] = useState<string[]>([]);
 
   const selectedInsurance = useMemo(() => 
@@ -34,6 +44,33 @@ export function EmployeeFlow() {
       .filter(p => activeProtections.includes(p.id))
       .reduce((acc, p) => acc + p.price, 0);
   }, [selectedInsurance, activeProtections]);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoggingIn(true);
+    setLoginError('');
+
+    try {
+      const q = query(
+        collection(db, 'users'),
+        where('loginId', '==', loginData.loginId),
+        where('password', '==', loginData.password)
+      );
+      
+      const snapshot = await getDocs(q);
+      
+      if (!snapshot.empty) {
+        setEmployee(snapshot.docs[0].data());
+        setStep('catalog');
+      } else {
+        setLoginError('Credenciais inválidas. Verifique os dados ou contate o RH.');
+      }
+    } catch (err) {
+      setLoginError('Erro ao conectar ao servidor. Tente novamente.');
+    } finally {
+      setIsLoggingIn(false);
+    }
+  };
 
   const addToPlan = () => {
     if (selectedInsuranceId) {
@@ -78,6 +115,68 @@ export function EmployeeFlow() {
       </div>
     </div>
   );
+
+  if (step === 'login') {
+    return (
+      <div className="flex-1 flex items-center justify-center bg-[#F4F4F5] p-6">
+        <Card className="max-w-md w-full p-12 rounded-[2.5rem] border-none shadow-2xl bg-white">
+          <div className="text-center mb-12">
+            <div className="w-20 h-20 bg-primary/5 rounded-[1.75rem] flex items-center justify-center text-primary mx-auto mb-8">
+              <ShieldCheck className="w-10 h-10" />
+            </div>
+            <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-4">ÁREA DO COLABORADOR</p>
+            <h2 className="text-4xl font-black text-zinc-900 tracking-tighter">Bem-vindo à Kover</h2>
+          </div>
+
+          <form onSubmit={handleLogin} className="space-y-8">
+            <div className="space-y-4">
+              <Label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">ID DE ACESSO</Label>
+              <div className="relative">
+                <User className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-300" />
+                <Input 
+                  required
+                  placeholder="Ex: C123456" 
+                  className="h-16 pl-16 rounded-2xl bg-zinc-50 border-none font-bold text-lg"
+                  value={loginData.loginId}
+                  onChange={(e) => setLoginData({...loginData, loginId: e.target.value})}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <Label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">SENHA PADRÃO</Label>
+              <div className="relative">
+                <Lock className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-300" />
+                <Input 
+                  required
+                  type="password"
+                  placeholder="******" 
+                  className="h-16 pl-16 rounded-2xl bg-zinc-50 border-none font-bold text-lg"
+                  value={loginData.password}
+                  onChange={(e) => setLoginData({...loginData, password: e.target.value})}
+                />
+              </div>
+            </div>
+
+            {loginError && (
+              <p className="text-red-500 text-sm font-bold text-center">{loginError}</p>
+            )}
+
+            <Button 
+              disabled={isLoggingIn}
+              className="w-full h-20 rounded-[1.75rem] bg-zinc-900 text-white hover:bg-zinc-800 font-black text-lg shadow-xl uppercase tracking-widest transition-all"
+            >
+              {isLoggingIn ? <Loader2 className="w-6 h-6 animate-spin" /> : "ENTRAR AGORA"}
+            </Button>
+          </form>
+
+          <p className="text-center text-zinc-400 text-xs mt-10 font-medium">
+            Primeiro acesso? Use o ID fornecido pelo seu RH.
+          </p>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="flex-1 flex flex-col h-full bg-[#F4F4F5]">
@@ -296,7 +395,6 @@ export function EmployeeFlow() {
               })}
             </div>
 
-            {/* Novo Summary Card - Clean & Premium */}
             <div className="bg-white rounded-[3rem] p-12 lg:p-16 border border-zinc-100 flex flex-col md:flex-row items-center justify-between gap-12 shadow-[0_35px_60px_-15px_rgba(0,0,0,0.1)] relative overflow-hidden">
               <div className="relative z-10">
                 <p className="text-zinc-400 font-black uppercase tracking-widest text-[10px] mb-2">INVESTIMENTO MENSAL TOTAL</p>

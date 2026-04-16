@@ -1,12 +1,30 @@
 
 "use client";
 
-import React from 'react';
-import { Users, ShieldCheck, TrendingUp, Star, PlusCircle, PieChart, Activity } from 'lucide-react';
+import React, { useState } from 'react';
+import { Users, ShieldCheck, TrendingUp, Star, PlusCircle, PieChart, Activity, Loader2, CheckCircle2 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter } from '@/components/ui/sheet';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useFirestore } from '@/firebase';
+import { collection, doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { errorEmitter } from '@/firebase/error-emitter';
+import { FirestorePermissionError } from '@/firebase/errors';
 
 export function CompanyDashboard() {
+  const db = useFirestore();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  
+  const [formData, setFormData] = useState({
+    cpf: '',
+    cep: '',
+    benefitValue: ''
+  });
+
   const metrics = [
     { label: 'Total de Colaboradores', value: '342', icon: Users, color: 'text-blue-500', bg: 'bg-blue-50' },
     { label: 'Colaboradores Protegidos', value: '287 (84%)', icon: ShieldCheck, color: 'text-green-500', bg: 'bg-green-50' },
@@ -22,6 +40,53 @@ export function CompanyDashboard() {
     { name: 'Proteção Digital', percentage: 78, count: 267 },
   ];
 
+  const handleCreateEmployee = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    const cleanCpf = formData.cpf.replace(/\D/g, '');
+    const loginId = `C${cleanCpf.slice(-6)}`;
+    const employeeId = crypto.randomUUID();
+
+    // Simular tempo de criação de conta
+    setTimeout(() => {
+      const employeeRef = doc(db, 'users', employeeId);
+      const employeeData = {
+        id: employeeId,
+        cpf: formData.cpf,
+        cep: formData.cep,
+        companyId: 'techlog-001', // Mocked for MVP
+        role: 'colaborador',
+        status: 'ativo',
+        benefitFlexibleValue: Number(formData.benefitValue),
+        benefitBalanceMonthly: Number(formData.benefitValue),
+        benefitBalanceAvailable: Number(formData.benefitValue),
+        loginId: loginId,
+        password: '123456',
+        createdAt: serverTimestamp()
+      };
+
+      setDoc(employeeRef, employeeData)
+        .then(() => {
+          setIsLoading(false);
+          setIsSuccess(true);
+          setTimeout(() => {
+            setIsSuccess(false);
+            setIsModalOpen(false);
+            setFormData({ cpf: '', cep: '', benefitValue: '' });
+          }, 2000);
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          errorEmitter.emit('permission-error', new FirestorePermissionError({
+            path: `users/${employeeId}`,
+            operation: 'create',
+            requestResourceData: employeeData
+          }));
+        });
+    }, 2500);
+  };
+
   return (
     <div className="flex-1 p-8 lg:p-16 bg-[#F4F4F5] overflow-y-auto">
       <header className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 lg:mb-20">
@@ -29,7 +94,10 @@ export function CompanyDashboard() {
           <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-4">CENTRAL DA EMPRESA</p>
           <h1 className="text-5xl lg:text-7xl font-black text-zinc-900 tracking-tighter leading-none">TechLog Transportes</h1>
         </div>
-        <Button className="h-16 lg:h-20 px-10 lg:px-12 rounded-[1.75rem] bg-primary hover:bg-primary/90 font-black text-xs uppercase tracking-[0.2em] gap-4 shadow-2xl shadow-primary/20 transition-all text-white">
+        <Button 
+          onClick={() => setIsModalOpen(true)}
+          className="h-16 lg:h-20 px-10 lg:px-12 rounded-[1.75rem] bg-primary hover:bg-primary/90 font-black text-xs uppercase tracking-[0.2em] gap-4 shadow-2xl shadow-primary/20 transition-all text-white"
+        >
           <PlusCircle className="w-6 h-6" />
           CADASTRAR FUNCIONÁRIO
         </Button>
@@ -51,7 +119,6 @@ export function CompanyDashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-12">
-        {/* Gráfico de Adesão */}
         <Card className="lg:col-span-2 border-none shadow-xl rounded-[2.5rem] lg:rounded-[3rem] p-10 lg:p-16 bg-white border border-zinc-50">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12 lg:mb-16">
             <h3 className="text-3xl lg:text-4xl font-black text-zinc-900 tracking-tighter flex items-center gap-4 lg:gap-5">
@@ -81,7 +148,6 @@ export function CompanyDashboard() {
           </div>
         </Card>
 
-        {/* Card de Impacto */}
         <div className="space-y-12">
           <Card className="border-none bg-primary text-white rounded-[2.5rem] lg:rounded-[3rem] p-10 lg:p-16 relative overflow-hidden h-full shadow-2xl shadow-primary/30 flex flex-col justify-between min-h-[400px]">
             <div className="relative z-10">
@@ -101,6 +167,94 @@ export function CompanyDashboard() {
           </Card>
         </div>
       </div>
+
+      <Sheet open={isModalOpen} onOpenChange={(open) => !isLoading && setIsModalOpen(open)}>
+        <SheetContent className="w-full sm:max-w-md rounded-l-[2.5rem] border-l-0 p-10 flex flex-col justify-between bg-white shadow-2xl">
+          {isSuccess ? (
+            <div className="flex-1 flex flex-col items-center justify-center text-center space-y-6">
+              <div className="w-24 h-24 bg-green-50 rounded-full flex items-center justify-center text-green-500 mb-4 animate-in zoom-in-50 duration-500">
+                <CheckCircle2 className="w-12 h-12" />
+              </div>
+              <h3 className="text-3xl font-black text-zinc-900 tracking-tighter">Conta criada com sucesso!</h3>
+              <p className="text-zinc-500 font-medium">O acesso do colaborador já está liberado na plataforma.</p>
+            </div>
+          ) : isLoading ? (
+            <div className="flex-1 flex flex-col items-center justify-center text-center space-y-6">
+              <div className="relative">
+                <Loader2 className="w-20 h-20 text-primary animate-spin" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <ShieldCheck className="w-8 h-8 text-primary/40" />
+                </div>
+              </div>
+              <h3 className="text-3xl font-black text-zinc-900 tracking-tighter">Criando conta segura...</h3>
+              <p className="text-zinc-500 font-medium">Gerando credenciais e vinculando benefício flexível.</p>
+            </div>
+          ) : (
+            <>
+              <SheetHeader className="mb-10">
+                <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-3">NOVO COLABORADOR</p>
+                <SheetTitle className="text-4xl font-black text-zinc-900 tracking-tighter leading-none">Cadastro MVP</SheetTitle>
+                <SheetDescription className="text-zinc-500 text-lg font-medium leading-relaxed mt-4">
+                  Insira os dados básicos para liberar o acesso ao benefício flexível Kover.
+                </SheetDescription>
+              </SheetHeader>
+
+              <form onSubmit={handleCreateEmployee} className="flex-1 space-y-8">
+                <div className="space-y-4">
+                  <Label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">CPF DO FUNCIONÁRIO</Label>
+                  <Input 
+                    required
+                    placeholder="000.000.000-00" 
+                    className="h-16 rounded-2xl bg-zinc-50 border-none px-6 text-lg font-bold focus-visible:ring-2 focus-visible:ring-primary"
+                    value={formData.cpf}
+                    onChange={(e) => setFormData({...formData, cpf: e.target.value})}
+                  />
+                </div>
+                <div className="space-y-4">
+                  <Label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">CEP RESIDENCIAL</Label>
+                  <Input 
+                    required
+                    placeholder="00000-000" 
+                    className="h-16 rounded-2xl bg-zinc-50 border-none px-6 text-lg font-bold focus-visible:ring-2 focus-visible:ring-primary"
+                    value={formData.cep}
+                    onChange={(e) => setFormData({...formData, cep: e.target.value})}
+                  />
+                </div>
+                <div className="space-y-4">
+                  <Label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">VALOR DO BENEFÍCIO (R$)</Label>
+                  <Input 
+                    required
+                    type="number"
+                    placeholder="Ex: 80.00" 
+                    className="h-16 rounded-2xl bg-zinc-50 border-none px-6 text-lg font-bold focus-visible:ring-2 focus-visible:ring-primary"
+                    value={formData.benefitValue}
+                    onChange={(e) => setFormData({...formData, benefitValue: e.target.value})}
+                  />
+                </div>
+
+                <div className="pt-8 space-y-4">
+                  <div className="p-6 bg-zinc-50 rounded-2xl border border-zinc-100">
+                    <p className="text-[9px] font-black text-zinc-400 uppercase tracking-widest mb-2">CREDENCIAIS GERADAS</p>
+                    <div className="flex justify-between items-center">
+                      <span className="text-zinc-600 font-bold">Login: CXXXXXX</span>
+                      <span className="text-zinc-600 font-bold">Senha: 123456</span>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+              <SheetFooter className="pt-10">
+                <Button 
+                  onClick={handleCreateEmployee}
+                  className="w-full h-20 rounded-[1.75rem] bg-zinc-900 text-white hover:bg-zinc-800 font-black text-lg shadow-2xl transition-all uppercase tracking-widest"
+                >
+                  FINALIZAR CADASTRO
+                </Button>
+              </SheetFooter>
+            </>
+          )}
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }
