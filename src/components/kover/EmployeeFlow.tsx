@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useMemo } from 'react';
@@ -65,10 +66,12 @@ export function EmployeeFlow() {
             <span className="text-xs font-black text-primary uppercase tracking-widest">R$ {p.price.toFixed(2)} / MÊS</span>
           </div>
         </div>
-        <Switch 
-          checked={activeProtections.includes(p.id)} 
-          onCheckedChange={() => toggleProtection(p.id)}
-        />
+        <div className="flex items-center justify-center">
+          <Switch 
+            checked={activeProtections.includes(p.id)} 
+            onCheckedChange={() => toggleProtection(p.id)}
+          />
+        </div>
       </div>
       <div className="px-8 pb-8 pt-0">
         <p className="text-sm text-zinc-400 font-medium leading-relaxed max-w-lg">{p.description}</p>
@@ -242,7 +245,7 @@ export function EmployeeFlow() {
                 <p className="text-5xl lg:text-6xl font-black text-primary tracking-tighter">R$ {customPrice.toFixed(2)}</p>
               </div>
               <Button 
-                className="w-full h-20 lg:h-24 rounded-[2rem] bg-zinc-950 text-white hover:bg-zinc-800 font-black text-lg lg:text-xl shadow-2xl transition-all uppercase tracking-widest"
+                className="w-full h-20 lg:h-24 rounded-[2rem] bg-zinc-900 text-white hover:bg-zinc-800 font-black text-lg lg:text-xl shadow-2xl transition-all uppercase tracking-widest"
                 onClick={addToPlan}
               >
                 ADICIONAR AO PLANO
@@ -253,7 +256,7 @@ export function EmployeeFlow() {
       )}
 
       {step === 'review' && (
-        <div className="flex-1 p-8 lg:p-16 overflow-y-auto">
+        <div className="flex-1 p-8 lg:p-16 overflow-y-auto bg-zinc-50/30">
           <div className="max-w-4xl mx-auto">
             <header className="mb-16">
               <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-3">REVISÃO FINAL</p>
@@ -265,9 +268,9 @@ export function EmployeeFlow() {
                 const category = INSURANCE_CATALOG.find(c => c.id === id);
                 if (!category) return null;
                 return (
-                  <div key={id} className="bg-white rounded-[2.5rem] p-10 flex items-center justify-between border border-zinc-100 shadow-xl">
+                  <div key={id} className="bg-white rounded-[2.5rem] p-10 flex items-center justify-between border border-zinc-100 shadow-xl group hover:shadow-2xl transition-all">
                     <div className="flex items-center gap-8">
-                      <div className="w-16 h-16 bg-zinc-50 rounded-2xl flex items-center justify-center text-zinc-900">
+                      <div className="w-16 h-16 bg-zinc-50 rounded-2xl flex items-center justify-center text-zinc-900 group-hover:bg-primary/10 group-hover:text-primary transition-colors">
                         <category.icon className="w-8 h-8" />
                       </div>
                       <div>
@@ -293,25 +296,27 @@ export function EmployeeFlow() {
               })}
             </div>
 
-            <div className="bg-zinc-950 rounded-[3rem] p-12 lg:p-16 text-white flex flex-col md:flex-row items-center justify-between gap-12 shadow-2xl">
-              <div>
+            {/* Novo Summary Card - Clean & Premium */}
+            <div className="bg-white rounded-[3rem] p-12 lg:p-16 border border-zinc-100 flex flex-col md:flex-row items-center justify-between gap-12 shadow-[0_35px_60px_-15px_rgba(0,0,0,0.1)] relative overflow-hidden">
+              <div className="relative z-10">
                 <p className="text-zinc-400 font-black uppercase tracking-widest text-[10px] mb-2">INVESTIMENTO MENSAL TOTAL</p>
-                <h3 className="text-6xl lg:text-7xl font-black tracking-tighter">R$ {currentTotal.toFixed(2)}</h3>
-                <p className="text-white/40 mt-4 font-medium italic text-lg">* Descontado do seu saldo flexível</p>
+                <h3 className="text-6xl lg:text-7xl font-black text-zinc-900 tracking-tighter">R$ {currentTotal.toFixed(2)}</h3>
+                <p className="text-zinc-400 mt-4 font-medium italic text-lg">* Descontado do seu saldo flexível</p>
               </div>
               <Button 
                 onClick={() => setStep('confirmation')}
-                className="w-full md:w-auto h-20 lg:h-24 px-12 lg:px-16 rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-black text-lg lg:text-xl shadow-2xl shadow-primary/20 transition-all uppercase tracking-widest"
+                className="relative z-10 w-full md:w-auto h-20 lg:h-24 px-12 lg:px-16 rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-black text-lg lg:text-xl shadow-2xl shadow-primary/20 transition-all uppercase tracking-widest"
               >
                 CONFIRMAR E ATIVAR
               </Button>
+              <div className="absolute top-0 right-0 w-80 h-80 bg-primary/5 rounded-full -mr-40 -mt-40 blur-3xl opacity-50" />
             </div>
           </div>
         </div>
       )}
 
       {step === 'confirmation' && (
-        <div className="flex-1 flex items-center justify-center p-6">
+        <div className="flex-1 flex items-center justify-center p-6 bg-white">
           <div className="max-w-2xl w-full text-center slide-in">
             <div className="w-32 h-32 bg-[#10B981]/10 rounded-full flex items-center justify-center mx-auto mb-12">
               <CheckCircle2 className="w-16 h-16 text-[#10B981]" />
