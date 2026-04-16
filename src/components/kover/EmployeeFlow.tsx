@@ -264,7 +264,7 @@ export function EmployeeFlow() {
                       <div className="flex items-center justify-between">
                         <div className={cn(
                           "w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl flex items-center justify-center transition-all",
-                          inCart ? "bg-primary text-white" : "bg-zinc-50 text-zinc-400 group-hover:bg-primary/10 group-hover:text-primary"
+                          inCart ? "bg-primary text-white" : "bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white"
                         )}>
                           <item.icon className="w-6 h-6 md:w-8 md:h-8" />
                         </div>
@@ -275,7 +275,7 @@ export function EmployeeFlow() {
                         )}
                       </div>
                       <div>
-                        <h4 className="text-xl md:text-2xl lg:text-3xl font-black text-primary mb-2 tracking-tighter leading-tight">{item.name}</h4>
+                        <h4 className="text-xl md:text-2xl lg:text-3xl font-black text-zinc-900 mb-2 tracking-tighter leading-tight">{item.name}</h4>
                         <p className="text-xs md:text-sm text-zinc-400 font-medium leading-relaxed line-clamp-3">{item.description}</p>
                       </div>
                     </div>
