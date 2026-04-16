@@ -1,0 +1,408 @@
+{
+  "entities": {
+    "Company": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Company",
+      "type": "object",
+      "description": "Represents a company that subscribes to the Kover platform, offering benefits to its employees. This entity stores aggregated data for the company dashboard.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Company entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The official name of the company."
+        },
+        "totalEmployees": {
+          "type": "number",
+          "description": "The total number of employees registered under this company."
+        },
+        "protectedEmployeesCount": {
+          "type": "number",
+          "description": "The number of employees who have selected at least one insurance plan."
+        },
+        "monthlyInvestment": {
+          "type": "number",
+          "description": "The total monthly investment made by the company in employee insurance benefits."
+        },
+        "averageSatisfaction": {
+          "type": "number",
+          "description": "The average satisfaction rating from employees regarding their insurance experience (e.g., 1-5)."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the company record was created.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "totalEmployees",
+        "protectedEmployeesCount",
+        "monthlyInvestment",
+        "averageSatisfaction",
+        "createdAt"
+      ]
+    },
+    "Employee": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Employee",
+      "type": "object",
+      "description": "Represents an individual employee (colaborador) of a company, including personal details, benefit information, and temporary login credentials for MVP demonstration.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Employee entity (auto-generated userId)."
+        },
+        "cpf": {
+          "type": "string",
+          "description": "The employee's Cadastro de Pessoas Físicas (CPF) number. Unique per employee."
+        },
+        "cep": {
+          "type": "string",
+          "description": "The employee's Código de Endereçamento Postal (CEP)."
+        },
+        "companyId": {
+          "type": "string",
+          "description": "Reference to the Company this employee belongs to. (Relationship: Company 1:N Employee)"
+        },
+        "role": {
+          "type": "string",
+          "description": "The role of the user within the platform (e.g., 'colaborador'). Fixed for MVP."
+        },
+        "status": {
+          "type": "string",
+          "description": "The current status of the employee's account (e.g., 'ativo'). Fixed for MVP."
+        },
+        "benefitFlexibleValue": {
+          "type": "number",
+          "description": "The initial flexible benefit amount assigned to the employee by the company."
+        },
+        "benefitBalanceMonthly": {
+          "type": "number",
+          "description": "The total monthly benefit allowance available to the employee."
+        },
+        "benefitBalanceAvailable": {
+          "type": "number",
+          "description": "The current remaining benefit amount for the employee in the current month."
+        },
+        "loginId": {
+          "type": "string",
+          "description": "Temporary login ID for MVP demonstration purposes (e.g., 'C' + last 6 digits of CPF)."
+        },
+        "password": {
+          "type": "string",
+          "description": "Temporary password for MVP demonstration purposes ('123456'). NOT FOR PRODUCTION."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the employee record was created.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "cpf",
+        "cep",
+        "companyId",
+        "role",
+        "status",
+        "benefitFlexibleValue",
+        "benefitBalanceMonthly",
+        "benefitBalanceAvailable",
+        "loginId",
+        "password",
+        "createdAt"
+      ]
+    },
+    "InsuranceProduct": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "InsuranceProduct",
+      "type": "object",
+      "description": "Defines a generic insurance product category available in the catalog, including its base features and pricing structure.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the InsuranceProduct entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the insurance category (e.g., 'Seguro de Vida')."
+        },
+        "basePriceMonthly": {
+          "type": "number",
+          "description": "The 'starting from' monthly price for this insurance product."
+        },
+        "iconName": {
+          "type": "string",
+          "description": "The name of the Lucide React icon associated with this product category."
+        },
+        "minCoverageAmount": {
+          "type": "number",
+          "description": "The minimum adjustable coverage amount for this insurance product."
+        },
+        "maxCoverageAmount": {
+          "type": "number",
+          "description": "The maximum adjustable coverage amount for this insurance product."
+        },
+        "coverageStep": {
+          "type": "number",
+          "description": "The increment step for adjusting the coverage amount."
+        },
+        "essentialFeatures": {
+          "type": "array",
+          "description": "A list of essential protection features included by default in this insurance product.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "extraFeatures": {
+          "type": "array",
+          "description": "A list of optional extra protection features available for this insurance product, with associated additional costs.",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "basePriceMonthly",
+        "iconName",
+        "minCoverageAmount",
+        "maxCoverageAmount",
+        "coverageStep",
+        "essentialFeatures",
+        "extraFeatures"
+      ]
+    },
+    "InsurancePlan": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "InsurancePlan",
+      "type": "object",
+      "description": "Represents a specific, customized insurance plan selected and configured by an employee from an InsuranceProduct.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the InsurancePlan entity."
+        },
+        "employeeId": {
+          "type": "string",
+          "description": "Reference to the Employee who owns this insurance plan. (Relationship: Employee 1:N InsurancePlan)"
+        },
+        "insuranceProductId": {
+          "type": "string",
+          "description": "Reference to the base InsuranceProduct from which this plan was customized. (Relationship: InsuranceProduct 1:N InsurancePlan)"
+        },
+        "coverageAmount": {
+          "type": "number",
+          "description": "The specific coverage amount chosen by the employee for this plan."
+        },
+        "selectedEssentialFeatures": {
+          "type": "array",
+          "description": "A list of the essential features selected/included in this specific plan instance.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "selectedExtraFeatures": {
+          "type": "array",
+          "description": "A list of the optional extra features selected by the employee for this specific plan instance.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "monthlyCost": {
+          "type": "number",
+          "description": "The calculated total monthly cost for this specific customized insurance plan."
+        },
+        "status": {
+          "type": "string",
+          "description": "The current status of the insurance plan (e.g., 'active', 'pending', 'cancelled')."
+        },
+        "activatedAt": {
+          "type": "string",
+          "description": "Timestamp when this insurance plan was activated by the employee.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "employeeId",
+        "insuranceProductId",
+        "coverageAmount",
+        "selectedEssentialFeatures",
+        "selectedExtraFeatures",
+        "monthlyCost",
+        "status",
+        "activatedAt"
+      ]
+    },
+    "EmployeeQuizAnswer": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "EmployeeQuizAnswer",
+      "type": "object",
+      "description": "Stores the answers provided by an employee during the onboarding quiz, used for personalized insurance recommendations.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the EmployeeQuizAnswer entity."
+        },
+        "employeeId": {
+          "type": "string",
+          "description": "Reference to the Employee who provided these answers. (Relationship: Employee 1:N EmployeeQuizAnswer)"
+        },
+        "activity": {
+          "type": "string",
+          "description": "Answer to 'Qual é a sua atividade profissional?'."
+        },
+        "vehicleUsage": {
+          "type": "string",
+          "description": "Answer to 'Você utiliza veículo próprio no trabalho?'."
+        },
+        "dependents": {
+          "type": "array",
+          "description": "Answers to 'Tem dependentes financeiros?' (multiple selection allowed).",
+          "items": {
+            "type": "string"
+          }
+        },
+        "mainConcern": {
+          "type": "string",
+          "description": "Answer to 'Qual sua maior preocupação hoje?'."
+        },
+        "answeredAt": {
+          "type": "string",
+          "description": "Timestamp when the quiz was completed.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "employeeId",
+        "activity",
+        "vehicleUsage",
+        "dependents",
+        "mainConcern",
+        "answeredAt"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/companies/{companyId}",
+        "definition": {
+          "entityName": "Company",
+          "schema": {
+            "$ref": "#/backend/entities/Company"
+          },
+          "description": "Top-level collection for company information. Access is restricted to authorized HR administrators of the respective company. The companyId parameter ensures specific company data access.",
+          "params": [
+            {
+              "name": "companyId",
+              "description": "The unique identifier for the Company."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/company_admins/{adminId}",
+        "definition": {
+          "entityName": "CompanyAdmin",
+          "schema": {
+            "$ref": "#/backend/entities/CompanyAdmin"
+          },
+          "description": "Dedicated collection for Database-Backed Access Control (DBAC) for HR users. Each document links an HR user's UID (adminId) to the companyId they are authorized to manage. This enables Authorization Independence for HR operations across their company's employees and related data. This entity is implicit, with a schema containing `companyId: string` and possibly `role: 'admin'`.",
+          "params": [
+            {
+              "name": "adminId",
+              "description": "The unique user ID (UID) of the HR administrator."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{employeeId}",
+        "definition": {
+          "entityName": "Employee",
+          "schema": {
+            "$ref": "#/backend/entities/Employee"
+          },
+          "description": "Stores individual employee data. The document ID (employeeId) is the same as the employee's user ID. Includes denormalized 'companyId' for Authorization Independence, allowing HR to query and manage employees within their company without hierarchical dependencies. Also contains temporary 'loginId' and 'password' for MVP demonstration.",
+          "params": [
+            {
+              "name": "employeeId",
+              "description": "The unique identifier for the Employee, corresponding to their user ID."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/insurance_products/{productId}",
+        "definition": {
+          "entityName": "InsuranceProduct",
+          "schema": {
+            "$ref": "#/backend/entities/InsuranceProduct"
+          },
+          "description": "Catalog of available insurance products. This collection is globally accessible for reading by all authenticated employees and managed by platform super-administrators. Features a homogeneous security posture.",
+          "params": [
+            {
+              "name": "productId",
+              "description": "The unique identifier for the InsuranceProduct."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{employeeId}/insurance_plans/{planId}",
+        "definition": {
+          "entityName": "InsurancePlan",
+          "schema": {
+            "$ref": "#/backend/entities/InsurancePlan"
+          },
+          "description": "Subcollection storing specific insurance plans selected by an employee. Includes denormalized 'employeeId' (already in schema) and 'companyId' (CRITICAL: MUST be denormalized here for Authorization Independence) to allow direct access for the owning employee and for authorized HR administrators without requiring hierarchical lookups. This facilitates robust QAPs and atomic operations.",
+          "params": [
+            {
+              "name": "employeeId",
+              "description": "The unique identifier of the parent Employee."
+            },
+            {
+              "name": "planId",
+              "description": "The unique identifier for the InsurancePlan."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{employeeId}/quiz_answers/{quizAnswerId}",
+        "definition": {
+          "entityName": "EmployeeQuizAnswer",
+          "schema": {
+            "$ref": "#/backend/entities/EmployeeQuizAnswer"
+          },
+          "description": "Subcollection storing quiz answers provided by an employee for recommendations. Includes denormalized 'employeeId' (already in schema) and 'companyId' (CRITICAL: MUST be denormalized here for Authorization Independence) to allow direct access for the owning employee and for authorized HR administrators without requiring hierarchical lookups. This supports robust QAPs and atomic operations.",
+          "params": [
+            {
+              "name": "employeeId",
+              "description": "The unique identifier of the parent Employee."
+            },
+            {
+              "name": "quizAnswerId",
+              "description": "The unique identifier for the EmployeeQuizAnswer."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore data structure is designed to adhere strictly to the CORE DESIGN PRINCIPLES and DESIGN STRATEGY MANDATES, prioritizing Authorization Independence, clarity of intent, DBAC (Database-Backed Access Control), and QAPs (Query Against Permissions).\n\n**Authorization Independence via Denormalization:**\nTo eliminate hierarchical authorization dependencies (avoiding `get()` calls in security rules), the `companyId` is denormalized across relevant collections. Each `Employee` document (`/users/{employeeId}`) explicitly contains `companyId`. Crucially, `InsurancePlan` documents (`/users/{employeeId}/insurance_plans/{planId}`) and `EmployeeQuizAnswer` documents (`/users/{employeeId}/quiz_answers/{quizAnswerId}`) also include a denormalized `companyId` field. This ensures that any HR user, authenticated and authorized for a specific `companyId` (via a dedicated `/company_admins/{adminId}` collection), can access any employee-related data for their company by directly checking `resource.data.companyId` without needing to perform `get()` operations on parent `users/{employeeId}` documents. For individual employees, their `request.auth.uid` directly matches their `userId` (document ID) and the `employeeId` field within their own `Employee` document and its subcollections, providing atomic and explicit ownership.\n\n**QAPs (Query Against Permissions) Support:**\n1.  **Company Data (`/companies/{companyId}`)**: HR users (company admins) can query for their specific `companyId` using `request.auth.uid` to verify their authorized `companyId` from `/company_admins/{adminId}`.\n2.  **Employee Data (`/users/{employeeId}`)**: HR users can list all employees for their company by querying the `/users` collection with a `where('companyId', '==', <theirCompanyId>)` clause. The security rules will then validate that the `companyId` in the query filter matches the `companyId` associated with the authenticated HR user, upholding QAPs without `get()` calls on potentially many employee documents.\n3.  **Insurance Products (`/insurance_products/{productId}`)**: This collection has a homogeneous security posture (read-only for all employees, write for platform super-admins), making QAPs straightforward for listing all available products.\n4.  **Employee Subcollections (`/users/{employeeId}/insurance_plans`, `/users/{employeeId}/quiz_answers`)**: Employees can list their own plans/answers by `request.auth.uid == employeeId`. For HR users, due to the denormalized `companyId` in these subcollection documents, they can list plans/answers for a specific employee of their company by combining path-based access (`employeeId`) with a `resource.data.companyId` check against their authenticated `companyId`, thereby supporting QAPs even in nested contexts.\n\n**Structural Segregation & Access Modeling:**\n*   `Company` data is segregated for company-level management.\n*   `Employee` data is private to the employee and managed by their associated HR.\n*   `InsuranceProduct` is a global, public catalog.\n*   `InsurancePlan` and `EmployeeQuizAnswer` are deeply tied to a specific employee via hierarchical paths (`/users/{employeeId}/...`), with `employeeId` and `companyId` denormalized within the documents for granular, independent authorization.\n*   Global roles for HR are handled via the `/company_admins/{adminId}` collection, leveraging \"Existence over Content\" for DBAC. The MVP fixed login credentials for employees are explicitly stored within the `Employee` entity as requested, with a clear warning regarding production use."
+  }
+}

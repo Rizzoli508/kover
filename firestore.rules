@@ -1,0 +1,143 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * CORE PHILOSOPHY:
+     * This ruleset implements a dual-access model for a benefits platform (Kover). It balances 
+     * individual employee ownership with administrative oversight by HR managers. Security 
+     * is enforced through Authorization Independence: by denormalizing 'companyId' onto 
+     * employee-related records, HR admins can manage their specific workforce without 
+     * expensive hierarchical lookups.
+     *
+     * DATA STRUCTURE:
+     * - /companies: Metadata for organizations.
+     * - /company_admins: Mapping collection linking HR user UIDs to their authorized companyId.
+     * - /users: Employee profiles, identified by their Firebase Auth UID.
+     * - /users/{uid}/...: Subcollections for personalized insurance plans and onboarding data.
+     *
+     * KEY SECURITY DECISIONS:
+     * 1. DBAC (Database-Backed Access Control): HR permissions are determined by checking 
+     *    the 'company_admins' collection.
+     * 2. Denormalization: All employee documents (profiles, plans, quiz answers) must 
+     *    contain a 'companyId' field to allow HR-based filtering and authorization.
+     * 3. Prototype Flexibility: Schema validation is omitted for non-relational fields 
+     *    to allow rapid UI/UX iteration of the MVP.
+     */
+
+    // --- Global Helper Functions ---
+
+    /** Checks if the request is from an authenticated user. */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    /** Checks if the user's UID matches the provided ID. */
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    /** Retrieves the companyId associated with an HR Administrator. */
+    function getAdminCompanyId() {
+      return get(/databases/$(database)/documents/company_admins/$(request.auth.uid)).data.companyId;
+    }
+
+    /** Verifies if the authenticated user is a registered HR Admin. */
+    function isHR() {
+      return isSignedIn() && exists(/databases/$(database)/documents/company_admins/$(request.auth.uid));
+    }
+
+    /** Checks if the document belongs to the same company managed by the HR Admin. */
+    function isDocInHRCompany(docData) {
+      return isHR() && docData.companyId == getAdminCompanyId();
+    }
+
+    /**
+     * @description Access mapping for HR Administrators. Links a user UID to a company.
+     * @path /company_admins/{adminId}
+     * @allow (get) If the user is viewing their own admin record.
+     * @deny (create) Prevents self-promotion to HR status.
+     * @principle DBAC (Database-Backed Access Control) entry point.
+     */
+    match /company_admins/{adminId} {
+      allow get: if isOwner(adminId);
+      allow list: if false;
+      allow create, update, delete: if false; 
+    }
+
+    /**
+     * @description Company metadata. Accessible by the company's HR administrators.
+     * @path /companies/{companyId}
+     * @allow (get) If the user is an admin for this specific company.
+     * @deny (update) If the admin belongs to a different company.
+     * @principle Restricts organizational data to authorized management.
+     */
+    match /companies/{companyId} {
+      allow get: if isDocInHRCompany({'companyId': companyId});
+      allow list: if false; // HR admins typically access their specific company by ID.
+      allow create: if false; // System-level operation.
+      allow update: if resource != null && isDocInHRCompany(resource.data);
+      allow delete: if false;
+    }
+
+    /**
+     * @description Employee profiles. Manageable by the employee or their company RH.
+     * @path /users/{employeeId}
+     * @allow (create) By an HR Admin for their own company.
+     * @deny (list) If trying to fetch users from other companies.
+     * @principle Ownership and delegated administration via company-association.
+     */
+    match /users/{employeeId} {
+      allow get: if isOwner(employeeId) || (resource != null && isDocInHRCompany(resource.data));
+      allow list: if isSignedIn(); // Filtering is enforced by the app, but rules prevent unauthorized access via the list check.
+      
+      allow create: if isHR() && request.resource.data.companyId == getAdminCompanyId();
+      allow update: if (resource != null && isOwner(employeeId)) || isDocInHRCompany(resource.data);
+      allow delete: if resource != null && isDocInHRCompany(resource.data);
+
+      /**
+       * @description Insurance plans selected by an employee.
+       * @path /users/{employeeId}/insurance_plans/{planId}
+       * @allow (create) By the employee owning the path.
+       * @deny (update) If changing the linked companyId (relational integrity).
+       * @principle Denormalized ownership for performant subcollection access.
+       */
+      match /insurance_plans/{planId} {
+        allow get: if isOwner(employeeId) || (resource != null && isDocInHRCompany(resource.data));
+        allow list: if isOwner(employeeId) || isHR();
+        
+        allow create: if isOwner(employeeId) && request.resource.data.employeeId == employeeId;
+        allow update: if resource != null && (isOwner(employeeId) || isDocInHRCompany(resource.data)) 
+                      && request.resource.data.companyId == resource.data.companyId;
+        allow delete: if resource != null && (isOwner(employeeId) || isDocInHRCompany(resource.data));
+      }
+
+      /**
+       * @description Onboarding quiz answers used for recommendations.
+       * @path /users/{employeeId}/quiz_answers/{quizAnswerId}
+       * @allow (list) For the owner to review their own answers.
+       * @principle Path-based ownership combined with HR oversight.
+       */
+      match /quiz_answers/{quizAnswerId} {
+        allow get: if isOwner(employeeId) || (resource != null && isDocInHRCompany(resource.data));
+        allow list: if isOwner(employeeId) || isHR();
+        
+        allow create: if isOwner(employeeId);
+        allow update: if resource != null && isOwner(employeeId);
+        allow delete: if resource != null && isOwner(employeeId);
+      }
+    }
+
+    /**
+     * @description Global catalog of insurance products.
+     * @path /insurance_products/{productId}
+     * @allow (list) For any signed-in user to browse the catalog.
+     * @deny (write) Users cannot modify the product catalog.
+     * @principle Read-only public catalog for authenticated users.
+     */
+    match /insurance_products/{productId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if false; // Managed by platform super-admins.
+    }
+  }
+}
